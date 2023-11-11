@@ -1,0 +1,1 @@
+INSERT INTO servicio ( costo, estado, fecha_alta, nombre) VALUES('10', 'Activo', '2023-10-18', 'Desayuno'), ( '15', 'Activo', '2023-10-20', 'Almuerzo');
