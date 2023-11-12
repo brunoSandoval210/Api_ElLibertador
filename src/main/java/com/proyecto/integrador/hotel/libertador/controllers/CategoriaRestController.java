@@ -36,7 +36,7 @@ public class CategoriaRestController {
 		return categoriaService.findAll();
 	}
 
-	@GetMapping("/categorias/{id}")
+	/*@GetMapping("/categorias/{id}")
 	public ResponseEntity<?> show(@PathVariable Long id) {
 		Categoria categoria = null;
 		Map<String, Object> response = new HashMap();
@@ -55,7 +55,7 @@ public class CategoriaRestController {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<Categoria>(categoria, HttpStatus.OK);
-	}
+	}*/
 	
 
 }

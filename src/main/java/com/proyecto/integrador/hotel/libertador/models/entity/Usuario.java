@@ -10,155 +10,182 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.PrePersist;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
-public class Usuario implements Serializable{
+public class Usuario implements Serializable {
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@NotEmpty(message = "No puede estar vacio")
+	@Email
 	@Column(nullable = false, unique = true)
-    private String email;
+	private String email;
+
 	@Column(nullable = false)
-    private String contrasena;
-	@Column(nullable = false)
-    private int DNI;
+	private String contrasena;
+
 	@Column(nullable = false, unique = true)
-    private String nombre;
+	private int DNI;
+
+	@NotEmpty(message = "No puede estar vacio")
 	@Column(nullable = false)
-    private String apellido;
+	private String nombre;
+
 	@Column(nullable = false)
-    private int telefono;
+	private String apellido;
+
 	@Column(nullable = false)
-    private String tipo;
-    @Temporal(TemporalType.DATE)
-    private Date fechaAlta;
-    @PrePersist
-    public void prePersist() {
-    	fechaAlta=new Date();
-    }
-    @Temporal(TemporalType.DATE)
-    private Date fechaBaja;
-    private String estado;
-    @OneToMany(mappedBy = "usuario")
-    private List<Reserva> reservas;
-    
-    public Usuario() {
-    }
+	private int telefono;
 
-    public Usuario(Long id, String email, String contrasena, int DNI, String nombre, String apellido, int telefono, String tipo, Date fechaAlta, Date fechaBaja, String estado, List<Reserva> reservas) {
-        this.id = id;
-        this.email = email;
-        this.contrasena = contrasena;
-        this.DNI = DNI;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.telefono = telefono;
-        this.tipo = tipo;
-        this.fechaAlta = fechaAlta;
-        this.fechaBaja = fechaBaja;
-        this.estado = estado;
-        this.reservas = reservas;
-    }
+	@Column(nullable = false)
+	private String tipo;
 
-    public Long getId() {
-        return id;
-    }
+	@NotNull(message = "La fecha de alta no puede ser nullo")
+	@Temporal(TemporalType.DATE)
+	private Date fechaAlta;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	/*
+	 * @PrePersist public void prePersist() { fechaAlta=new Date(); }
+	 */
 
-    public String getEmail() {
-        return email;
-    }
+	@Temporal(TemporalType.DATE)
+	private Date fechaBaja;
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	private String estado;
 
-    public String getContrasena() {
-        return contrasena;
-    }
+	@OneToMany(mappedBy = "usuario")
+	private List<Reserva> reservas;
+	
+	private String foto;
 
-    public void setContrasena(String contrasena) {
-        this.contrasena = contrasena;
-    }
+	public Usuario() {
+	}
 
-    public int getDNI() {
-        return DNI;
-    }
+	public Usuario(Long id, String email, String contrasena, int DNI, String nombre, String apellido, int telefono,
+			String tipo, Date fechaAlta, Date fechaBaja, String estado, List<Reserva> reservas) {
+		this.id = id;
+		this.email = email;
+		this.contrasena = contrasena;
+		this.DNI = DNI;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.telefono = telefono;
+		this.tipo = tipo;
+		this.fechaAlta = fechaAlta;
+		this.fechaBaja = fechaBaja;
+		this.estado = estado;
+		this.reservas = reservas;
+	}
 
-    public void setDNI(int DNI) {
-        this.DNI = DNI;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public String getNombre() {
-        return nombre;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public String getApellido() {
-        return apellido;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
+	public String getContrasena() {
+		return contrasena;
+	}
 
-    public int getTelefono() {
-        return telefono;
-    }
+	public void setContrasena(String contrasena) {
+		this.contrasena = contrasena;
+	}
 
-    public void setTelefono(int telefono) {
-        this.telefono = telefono;
-    }
+	public int getDNI() {
+		return DNI;
+	}
 
-    public String getTipo() {
-        return tipo;
-    }
+	public void setDNI(int DNI) {
+		this.DNI = DNI;
+	}
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
+	public String getNombre() {
+		return nombre;
+	}
 
-    public Date getFechaAlta() {
-        return fechaAlta;
-    }
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
 
-    public void setFechaAlta(Date fechaAlta) {
-        this.fechaAlta = fechaAlta;
-    }
+	public String getApellido() {
+		return apellido;
+	}
 
-    public Date getFechaBaja() {
-        return fechaBaja;
-    }
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
+	}
 
-    public void setFechaBaja(Date fechaBaja) {
-        this.fechaBaja = fechaBaja;
-    }
+	public int getTelefono() {
+		return telefono;
+	}
 
-    public String getEstado() {
-        return estado;
-    }
+	public void setTelefono(int telefono) {
+		this.telefono = telefono;
+	}
 
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
+	public String getTipo() {
+		return tipo;
+	}
 
-    public List<Reserva> getReservas() {
-        return reservas;
-    }
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
 
-    public void setReservas(List<Reserva> reservas) {
-        this.reservas = reservas;
-    }
+	public Date getFechaAlta() {
+		return fechaAlta;
+	}
+
+	public void setFechaAlta(Date fechaAlta) {
+		this.fechaAlta = fechaAlta;
+	}
+
+	public Date getFechaBaja() {
+		return fechaBaja;
+	}
+
+	public void setFechaBaja(Date fechaBaja) {
+		this.fechaBaja = fechaBaja;
+	}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	public List<Reserva> getReservas() {
+		return reservas;
+	}
+
+	public void setReservas(List<Reserva> reservas) {
+		this.reservas = reservas;
+	}
+	
+	public String getFoto() {
+		return foto;
+	}
+
+	public void setFoto(String foto) {
+		this.foto = foto;
+	}
 
 	@Override
 	public String toString() {
@@ -166,5 +193,7 @@ public class Usuario implements Serializable{
 				+ nombre + ", apellido=" + apellido + ", telefono=" + telefono + ", tipo=" + tipo + ", fechaAlta="
 				+ fechaAlta + ", fechaBaja=" + fechaBaja + ", estado=" + estado + ", reservas=" + reservas + "]";
 	}
-    
+
+	
+
 }

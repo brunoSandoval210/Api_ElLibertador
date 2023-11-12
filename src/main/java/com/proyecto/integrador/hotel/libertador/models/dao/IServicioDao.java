@@ -1,10 +1,10 @@
 package com.proyecto.integrador.hotel.libertador.models.dao;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.proyecto.integrador.hotel.libertador.models.entity.Servicio;
 
 
-public interface IServicioDao extends CrudRepository<Servicio, Long>{
+public interface IServicioDao extends JpaRepository<Servicio, Long>{
 
 }
