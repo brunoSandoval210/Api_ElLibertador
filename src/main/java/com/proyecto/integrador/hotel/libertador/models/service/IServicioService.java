@@ -1,5 +1,6 @@
 package com.proyecto.integrador.hotel.libertador.models.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -17,4 +18,6 @@ public interface IServicioService {
 	public Servicio save(Servicio servicio);
 	
 	public void delete(Long id);
+	
+	public void cambiarEstadoServicio(long id) throws EntityNotFoundException;
 }

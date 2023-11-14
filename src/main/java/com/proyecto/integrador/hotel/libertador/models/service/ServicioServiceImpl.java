@@ -1,5 +1,7 @@
 package com.proyecto.integrador.hotel.libertador.models.service;
 
+import jakarta.persistence.EntityNotFoundException;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.proyecto.integrador.hotel.libertador.models.dao.IServicioDao;
 import com.proyecto.integrador.hotel.libertador.models.entity.Servicio;
-import com.proyecto.integrador.hotel.libertador.models.entity.Usuario;
 
 @Service
 public class ServicioServiceImpl implements IServicioService{
@@ -44,7 +45,23 @@ public class ServicioServiceImpl implements IServicioService{
 	@Override
 	@Transactional(readOnly = true)
 	public Page<Servicio> findAll(Pageable pageable) {
-		// TODO Auto-generated method stub
 		return servicioDao.findAll(pageable);
 	}
+	
+	@Override
+    @Transactional
+    public void cambiarEstadoServicio(long id) throws EntityNotFoundException {
+        Servicio servicio = servicioDao.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException ("El servicio con ID " + id + " no existe."));
+
+        if ("Activo".equals(servicio.getEstado())) {
+            servicio.setEstado("Desactivado");
+            servicio.setFechaBaja(new Date()); 
+        } else {
+            servicio.setEstado("Activo");
+            servicio.setFechaBaja(null); 
+        }
+
+        servicioDao.save(servicio);
+    }
 }

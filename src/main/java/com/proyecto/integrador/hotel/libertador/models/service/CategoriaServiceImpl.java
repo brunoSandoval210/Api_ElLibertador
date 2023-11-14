@@ -3,12 +3,13 @@ package com.proyecto.integrador.hotel.libertador.models.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.proyecto.integrador.hotel.libertador.models.dao.ICategoriaDao;
 import com.proyecto.integrador.hotel.libertador.models.entity.Categoria;
-import com.proyecto.integrador.hotel.libertador.models.entity.Usuario;
 
 @Service
 public class CategoriaServiceImpl implements ICategoriaService{
@@ -39,6 +40,12 @@ public class CategoriaServiceImpl implements ICategoriaService{
 	public void delete(Long id) {
 		categoriaDao.deleteById(id);
 		
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Page<Categoria> findAll(Pageable pageable) {
+		return categoriaDao.findAll(pageable);
 	}
 
 }

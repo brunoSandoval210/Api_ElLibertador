@@ -1,11 +1,16 @@
 package com.proyecto.integrador.hotel.libertador.models.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,6 +23,7 @@ import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Usuario implements Serializable {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -58,21 +64,25 @@ public class Usuario implements Serializable {
 	private Date fechaBaja;
 
 	private String estado;
-
-	@OneToMany(mappedBy = "usuario")
+	@JsonIgnoreProperties(value={"usuario","hibernateLazyInitializer","handler"}, allowGetters = true)
+	@OneToMany(mappedBy = "usuario",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Reserva> reservas;
 	
 	private String foto;
 
 	public Usuario() {
+		this.reservas=new ArrayList<>();
 	}
 
-	public Usuario(Long id, String email, String contrasena, int DNI, String nombre, String apellido, int telefono,
-			String tipo, Date fechaAlta, Date fechaBaja, String estado, List<Reserva> reservas) {
+	public Usuario(Long id, String email, String contrasena, int dNI,
+			String nombre, String apellido, int telefono, String tipo,
+			Date fechaAlta, Date fechaBaja, String estado,
+			List<Reserva> reservas) {
+		super();
 		this.id = id;
 		this.email = email;
 		this.contrasena = contrasena;
-		this.DNI = DNI;
+		this.DNI = dNI;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.telefono = telefono;
@@ -82,6 +92,7 @@ public class Usuario implements Serializable {
 		this.estado = estado;
 		this.reservas = reservas;
 	}
+
 
 	public Long getId() {
 		return id;
@@ -111,8 +122,8 @@ public class Usuario implements Serializable {
 		return DNI;
 	}
 
-	public void setDNI(int DNI) {
-		this.DNI = DNI;
+	public void setDNI(int dNI) {
+		DNI = dNI;
 	}
 
 	public String getNombre() {
@@ -178,7 +189,7 @@ public class Usuario implements Serializable {
 	public void setReservas(List<Reserva> reservas) {
 		this.reservas = reservas;
 	}
-	
+
 	public String getFoto() {
 		return foto;
 	}
@@ -193,7 +204,7 @@ public class Usuario implements Serializable {
 				+ nombre + ", apellido=" + apellido + ", telefono=" + telefono + ", tipo=" + tipo + ", fechaAlta="
 				+ fechaAlta + ", fechaBaja=" + fechaBaja + ", estado=" + estado + ", reservas=" + reservas + "]";
 	}
-
 	
+	private static final long serialVersionUID = 1L;
 
 }

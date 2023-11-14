@@ -1,7 +1,6 @@
 package com.proyecto.integrador.hotel.libertador.controllers;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,12 +9,10 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -31,42 +28,42 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.proyecto.integrador.hotel.libertador.models.entity.Usuario;
+import com.proyecto.integrador.hotel.libertador.models.entity.Habitacion;
+import com.proyecto.integrador.hotel.libertador.models.service.IHabitacionService;
 import com.proyecto.integrador.hotel.libertador.models.service.IUploadFileService;
-import com.proyecto.integrador.hotel.libertador.models.service.IUsuarioService;
 
 import jakarta.validation.Valid;
 
 @CrossOrigin(origins= {"http://localhost:4200"})
 @RestController
 @RequestMapping("/api")
-public class UsuarioRestController {
+public class HabitacionRestController {
 	@Autowired
-	private IUsuarioService usuarioService;
+	private IHabitacionService habitacionService;
 	
 	@Autowired
 	private IUploadFileService uploadService;
 	
-	private final Logger log=LoggerFactory.getLogger(UsuarioRestController.class);
-
-	@GetMapping("/usuarios")
-	public List<Usuario> index() {
-		return usuarioService.findAll();
+	private final Logger log=LoggerFactory.getLogger(HabitacionRestController.class);
+	
+	@GetMapping("/habitaciones")
+	public List<Habitacion> index() {
+		return habitacionService.findAll();
 	}
 	
-	@GetMapping("/usuarios/page/{page}")
-	public Page<Usuario> index(@PathVariable Integer page) {
+	@GetMapping("/habitaciones/page/{page}")
+	public Page<Habitacion> index(@PathVariable Integer page) {
 	    Pageable pageable = PageRequest.of(page, 10);
-	    return usuarioService.findAll(pageable);
+	    return habitacionService.findAll(pageable);
 	}
-
-	@GetMapping("/usuarios/{id}")
+	
+	@GetMapping("/habitaciones/{id}")
 	public ResponseEntity<?> show(@PathVariable Long id) {
-		Usuario usuario = null;
+		Habitacion habitacion = null;
 		Map<String, Object> response = new HashMap();
 
 		try {
-			usuario = usuarioService.findById(id);
+			habitacion = habitacionService.findById(id);
 
 		} catch (DataAccessException e) {
 			response.put("mensaje", "Error al realizar la consulta en la base de datos");
@@ -74,16 +71,16 @@ public class UsuarioRestController {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
-		if (usuario == null) {
-			response.put("mensaje", "El cliente ID: ".concat(id.toString().concat(" no existe en la base de datos")));
+		if (habitacion == null) {
+			response.put("mensaje", "La habitacion ID: ".concat(id.toString().concat(" no existe en la base de datos")));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
+		return new ResponseEntity<Habitacion>(habitacion, HttpStatus.OK);
 	}
-
-	@PostMapping("/usuarios")
-	public ResponseEntity<?> create(@Valid @RequestBody Usuario usuario, BindingResult result) {
-		Usuario nuevoUsuario=null;
+	
+	@PostMapping("/habitaciones")
+	public ResponseEntity<?> create(@Valid @RequestBody Habitacion habitacion, BindingResult result) {
+		Habitacion nuevaHabitacion=null;
 		Map<String, Object> response = new HashMap();
 		
 		if(result.hasErrors()) {
@@ -97,22 +94,22 @@ public class UsuarioRestController {
 		}	
 		
 		try {
-			nuevoUsuario=usuarioService.save(usuario);
+			nuevaHabitacion=habitacionService.save(habitacion);
 			
 		}catch (DataAccessException e) {
 			response.put("mensaje", "Error al realizar el insert en la base de datos");
 			response.put("error", e.getMessage().concat(":").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		response.put("mensaje", "El usuario se creo con exito");
-		response.put("usuario", nuevoUsuario);
+		response.put("mensaje", "La habitacion se creo con exito");
+		response.put("usuario", nuevaHabitacion);
 		return new ResponseEntity<Map<String,Object>>(response ,HttpStatus.CREATED);
 	}
 	
-	@PutMapping("/usuarios/{id}")
-	public ResponseEntity<?> update(@Valid @RequestBody Usuario usuario, BindingResult result, @PathVariable Long id) {
-		Usuario usuarioActual=usuarioService.findById(id);
-		Usuario usuarioActualizado=null; 
+	@PutMapping("/habitaciones/{id}")
+	public ResponseEntity<?> update(@Valid @RequestBody Habitacion habitacion, BindingResult result, @PathVariable Long id) {
+		Habitacion habitacionActual=habitacionService.findById(id);
+		Habitacion habitacionActulizada=null; 
 		
 		Map<String, Object> response = new HashMap();
 		
@@ -126,58 +123,53 @@ public class UsuarioRestController {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
 		}
 		
-		if (usuarioActual == null) {
-			response.put("mensaje", "Error, no se puede editar, el usuario ID: ".concat(id.toString().concat(" no existe en la base de datos")));
+		if (habitacionActual == null) {
+			response.put("mensaje", "Error, no se puede editar, la habitacion ID: ".concat(id.toString().concat(" no existe en la base de datos")));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 		}
 		try {
-			usuarioActual.setEmail(usuario.getEmail());
-		    usuarioActual.setContrasena(usuario.getContrasena());
-		    usuarioActual.setNombre(usuario.getNombre());
-		    usuarioActual.setTelefono(usuario.getTelefono());
-		    usuarioActual.setTipo(usuario.getTipo());
-			usuarioActual.setApellido(usuario.getApellido());
+			habitacionActual.setCostohabitacion(habitacion.getCostohabitacion());
+			habitacionActual.setMaxPersonas(habitacion.getMaxPersonas());
+			habitacionActual.setTipoHabitacion(habitacion.getTipoHabitacion());
 			
-			usuarioActualizado= usuarioService.save(usuarioActual);
+			habitacionActulizada= habitacionService.save(habitacionActual);
 			
 		} catch (DataAccessException e) {
-			response.put("mensaje", "Error al actualizar el usuario en la base de datos");
+			response.put("mensaje", "Error al actualizar la habitacion en la base de datos");
 			response.put("error", e.getMessage().concat(":").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		response.put("mensaje", "El usuario se actualizo con exito");
-		response.put("usuario", usuarioActual);
+		response.put("mensaje", "la habitacion se actualizo con exito");
+		response.put("habitacion", habitacionActual);
 		return new ResponseEntity<Map<String,Object>>(response ,HttpStatus.CREATED);	
 	}
 	
-	
-	
-	@DeleteMapping("/usuarios/{id}")
+	@DeleteMapping("/habitaciones/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id) {
 		
 		Map<String, Object> response = new HashMap();
 		
 		try {
-			Usuario usuario=usuarioService.findById(id);
-			String nombreFotoAnterior=usuario.getFoto();
+			Habitacion habitacion=habitacionService.findById(id);
+			String nombreFotoAnterior=habitacion.getFoto();
 			
 			uploadService.eliminar(nombreFotoAnterior);
-			usuarioService.delete(id);
+			habitacionService.delete(id);
 		} catch (DataAccessException e) {
-			response.put("mensaje", "Error al elimnar el usuario en la base de datos");
+			response.put("mensaje", "Error al elimnar la habitacion en la base de datos");
 			response.put("error", e.getMessage().concat(":").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
-		response.put("mensaje", "El usuario eliminado con exito");
+		response.put("mensaje", "La habitacion eliminado con exito");
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 	}
 	
-	@PostMapping("usuarios/upload")
+	@PostMapping("habitaciones/upload")
 	public ResponseEntity<?> upload(@RequestParam("archivo") MultipartFile archivo, @RequestParam("id") Long id){
 		Map<String, Object> response = new HashMap();
 		
-		Usuario usuario=usuarioService.findById(id);
+		Habitacion habitacion=habitacionService.findById(id);
 		
 		if(!archivo.isEmpty()) {
 			String nombreArchivo=null;
@@ -189,31 +181,16 @@ public class UsuarioRestController {
 				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 			
-			String nombreFotoAnterior=usuario.getFoto();
+			String nombreFotoAnterior=habitacion.getFoto();
 			
 			uploadService.eliminar(nombreFotoAnterior);
 			
-			usuario.setFoto(nombreArchivo);
-			usuarioService.save(usuario);
-			response.put("usuario", usuario);
+			habitacion.setFoto(nombreArchivo);
+			habitacionService.save(habitacion);
+			response.put("habitacion", habitacion);
 			response.put("mensaje", "Se ha subido correctamente la imagen"+nombreArchivo);
 		}
 		return new ResponseEntity<Map<String,Object>>(response ,HttpStatus.CREATED);	
 	}
 	
-	@GetMapping("upload/img/{nombreFoto:.+}")
-	public ResponseEntity<Resource> verFoto(@PathVariable String nombreFoto){
-
-		Resource recurso=null;
-		
-		try {
-			recurso=uploadService.cargar(nombreFoto);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
-	
-		HttpHeaders cabecera=new HttpHeaders();
-		cabecera.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+recurso.getFilename()+"\"");
-		return new ResponseEntity<Resource>(recurso,cabecera,HttpStatus.OK);
-	}
 }
