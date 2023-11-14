@@ -3,20 +3,29 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
 @Entity
 public class Categoria implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,31 +45,27 @@ public class Categoria implements Serializable{
     private String estado;
     private String foto;
     
-    @ManyToMany(mappedBy = "categorias")
+    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinTable(
+			name = "servicio_categoria",
+			joinColumns = @JoinColumn(name = "id_categoria"),
+			inverseJoinColumns = @JoinColumn(name = "id_servicio")
+			)
     private List<Servicio> servicios;    
-    
-    @ManyToMany
-    @JoinTable(
-        name = "Categoria_Salon",
-        joinColumns = @JoinColumn(name = "id_categoria"),
-        inverseJoinColumns = @JoinColumn(name = "id_salon")
-    )
-    private List<Salon> salones;
+    /*
+    @JsonIgnoreProperties({"tipoSalon", "hibernateLazyInitializer", "handler"})
+    @OneToMany(mappedBy = "tipoSalon", fetch = FetchType.LAZY)
+    private List<Salon> salones;*/
 
-    @ManyToMany
-    @JoinTable(
-        name = "Categoria_Habitacion",
-        joinColumns = @JoinColumn(name = "id_categoria"),
-        inverseJoinColumns = @JoinColumn(name = "id_habitacion")
-    )
+    @JsonIgnoreProperties({"tipoHabitacion", "hibernateLazyInitializer", "handler"})
+    @OneToMany(mappedBy = "tipoHabitacion", fetch = FetchType.LAZY)
     private List<Habitacion> habitaciones;
     
 	public Categoria() {
-		super();
 	}
 
 	public Categoria(Long id, String nombre, double costoServicios, int cantPersonas, Date fechaAlta, Date fechaBaja,
-			String estado, String foto, List<Servicio> servicios, List<Salon> salones, List<Habitacion> habitaciones) {
+			String estado, String foto, List<Servicio> servicios,/* List<Salon> salones,*/ List<Habitacion> habitaciones) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -71,8 +76,6 @@ public class Categoria implements Serializable{
 		this.estado = estado;
 		this.foto = foto;
 		this.servicios = servicios;
-		this.salones = salones;
-		this.habitaciones = habitaciones;
 	}
 
 	public Long getId() {
@@ -147,13 +150,13 @@ public class Categoria implements Serializable{
 		this.servicios = servicios;
 	}
 
-	public List<Salon> getSalones() {
+	/*public List<Salon> getSalones() {
 		return salones;
 	}
 
 	public void setSalones(List<Salon> salones) {
 		this.salones = salones;
-	}
+	}*/
 
 	public List<Habitacion> getHabitaciones() {
 		return habitaciones;
@@ -167,7 +170,7 @@ public class Categoria implements Serializable{
 	public String toString() {
 		return "Categoria [id=" + id + ", nombre=" + nombre + ", costoServicios=" + costoServicios + ", cantPersonas="
 				+ cantPersonas + ", fechaAlta=" + fechaAlta + ", fechaBaja=" + fechaBaja + ", estado=" + estado
-				+ ", foto=" + foto + ", servicios=" + servicios + ", salones=" + salones + ", habitaciones="
+				+ ", foto=" + foto + ", servicios=" + servicios + /*", salones=" + salones + */", habitaciones="
 				+ habitaciones + "]";
 	}
     
