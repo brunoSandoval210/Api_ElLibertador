@@ -22,4 +22,6 @@ public interface IUsuarioService {
 	
 	public void cambiarEstadoUsuario(long id) throws EntityNotFoundException;
 	
+    public Usuario findByEmailAndContrasena(String email, String contrasena);
+
 }

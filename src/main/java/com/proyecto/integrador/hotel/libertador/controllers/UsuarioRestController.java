@@ -230,4 +230,20 @@ public class UsuarioRestController {
                     .body("El usuario con ID " + id + " no existe.");
         }
     }
+	
+	@PostMapping("/usuarios/login")
+    public ResponseEntity<?> login(@RequestBody Map<String, String> loginRequest) {
+        String email = loginRequest.get("email");
+        String contrasena = loginRequest.get("contrasena");
+
+        Usuario usuario = usuarioService.findByEmailAndContrasena(email, contrasena);
+
+        if (usuario == null) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("mensaje", "Usuario no encontrado o credenciales incorrectas");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(usuario, HttpStatus.OK);
+    }
 }

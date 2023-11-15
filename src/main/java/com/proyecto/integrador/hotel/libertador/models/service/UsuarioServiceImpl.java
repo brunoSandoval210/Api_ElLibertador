@@ -65,4 +65,10 @@ public class UsuarioServiceImpl implements IUsuarioService{
 
         usuarioDao.save(usuario);
     }
+
+	@Override
+	@Transactional(readOnly = true)
+	public Usuario findByEmailAndContrasena(String email, String contrasena) {
+		return usuarioDao.findByEmailAndContrasena(email, contrasena);
+	}
 }
