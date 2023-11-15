@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,9 +36,10 @@ import com.proyecto.integrador.hotel.libertador.models.entity.Usuario;
 import com.proyecto.integrador.hotel.libertador.models.service.IUploadFileService;
 import com.proyecto.integrador.hotel.libertador.models.service.IUsuarioService;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 
-@CrossOrigin(origins= {"http://localhost:4200"})
+@CrossOrigin(origins= {"http://localhost:5173"})
 @RestController
 @RequestMapping("/api")
 public class UsuarioRestController {
@@ -216,4 +218,16 @@ public class UsuarioRestController {
 		cabecera.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+recurso.getFilename()+"\"");
 		return new ResponseEntity<Resource>(recurso,cabecera,HttpStatus.OK);
 	}
+	
+	@Transactional
+    @PutMapping("/usuarios/{id}/estado")
+    public ResponseEntity<String> cambiarEstadoUsuario(@PathVariable long id) {
+        try {
+        	usuarioService.cambiarEstadoUsuario(id);
+            return ResponseEntity.ok("Estado del usuario cambiado correctamente.");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("El usuario con ID " + id + " no existe.");
+        }
+    }
 }

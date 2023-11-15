@@ -1,6 +1,7 @@
 package com.proyecto.integrador.hotel.libertador.models.entity;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -22,16 +23,12 @@ import jakarta.persistence.TemporalType;
 
 @Entity
 public class Categoria implements Serializable{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	@Column(nullable = false, unique = true)
     private String nombre;
-    private double costoServicios;
     private int cantPersonas;
     @Temporal(TemporalType.DATE)
     private Date fechaAlta;
@@ -45,13 +42,14 @@ public class Categoria implements Serializable{
     private String estado;
     private String foto;
     
-    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JsonIgnoreProperties({"categorias", "hibernateLazyInitializer", "handler"})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
-			name = "servicio_categoria",
-			joinColumns = @JoinColumn(name = "id_categoria"),
-			inverseJoinColumns = @JoinColumn(name = "id_servicio")
-			)
-    private List<Servicio> servicios;    
+        name = "servicio_categoria",
+        joinColumns = @JoinColumn(name = "id_categoria"),
+        inverseJoinColumns = @JoinColumn(name = "id_servicio")
+    )
+    private List<Servicio> servicios;
     /*
     @JsonIgnoreProperties({"tipoSalon", "hibernateLazyInitializer", "handler"})
     @OneToMany(mappedBy = "tipoSalon", fetch = FetchType.LAZY)
@@ -61,15 +59,17 @@ public class Categoria implements Serializable{
     @OneToMany(mappedBy = "tipoHabitacion", fetch = FetchType.LAZY)
     private List<Habitacion> habitaciones;
     
+    private Double CostoServicios;
+    
+
 	public Categoria() {
 	}
 
-	public Categoria(Long id, String nombre, double costoServicios, int cantPersonas, Date fechaAlta, Date fechaBaja,
+	public Categoria(Long id, String nombre, int cantPersonas, Date fechaAlta, Date fechaBaja,
 			String estado, String foto, List<Servicio> servicios,/* List<Salon> salones,*/ List<Habitacion> habitaciones) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
-		this.costoServicios = costoServicios;
 		this.cantPersonas = cantPersonas;
 		this.fechaAlta = fechaAlta;
 		this.fechaBaja = fechaBaja;
@@ -94,13 +94,6 @@ public class Categoria implements Serializable{
 		this.nombre = nombre;
 	}
 
-	public double getCostoServicios() {
-		return costoServicios;
-	}
-
-	public void setCostoServicios(double costoServicios) {
-		this.costoServicios = costoServicios;
-	}
 
 	public int getCantPersonas() {
 		return cantPersonas;
@@ -156,7 +149,7 @@ public class Categoria implements Serializable{
 
 	public void setSalones(List<Salon> salones) {
 		this.salones = salones;
-	}*/
+	}
 
 	public List<Habitacion> getHabitaciones() {
 		return habitaciones;
@@ -164,15 +157,28 @@ public class Categoria implements Serializable{
 
 	public void setHabitaciones(List<Habitacion> habitaciones) {
 		this.habitaciones = habitaciones;
+	}*/
+	
+
+	public Double getCostoServicios() {
+		return CostoServicios;
 	}
 
-	@Override
-	public String toString() {
-		return "Categoria [id=" + id + ", nombre=" + nombre + ", costoServicios=" + costoServicios + ", cantPersonas="
-				+ cantPersonas + ", fechaAlta=" + fechaAlta + ", fechaBaja=" + fechaBaja + ", estado=" + estado
-				+ ", foto=" + foto + ", servicios=" + servicios + /*", salones=" + salones + */", habitaciones="
-				+ habitaciones + "]";
+	public void setCostoServicios(Double costoServicios) {
+		CostoServicios = costoServicios;
 	}
+	
+	
+
+	@Override
+    public String toString() {
+        return "Categoria [id=" + id + ", nombre=" + nombre + ", cantPersonas="
+                + cantPersonas + ", fechaAlta=" + fechaAlta + ", fechaBaja=" + fechaBaja + ", estado=" + estado
+                + ", foto=" + foto + ", servicios=" + servicios + ", habitaciones="
+                + habitaciones + "]";
+    }
+	
+	private static final long serialVersionUID = 1L;
     
 
 }
