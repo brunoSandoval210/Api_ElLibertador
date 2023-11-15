@@ -4,7 +4,7 @@ INSERT INTO servicio (costo, estado, fecha_alta, nombre) VALUES (15, 'Activo', '
 INSERT INTO servicio (costo, estado, fecha_alta, nombre) VALUES (12, 'Activo', '2023-10-22', 'Cena');
 INSERT INTO servicio (costo, estado, fecha_alta, nombre) VALUES (8, 'Activo', '2023-10-25', 'Merienda');
 INSERT INTO servicio (costo, estado, fecha_alta, nombre) VALUES (18, 'Activo', '2023-10-30', 'Habitación Limpia');
-INSERT INTO servicio (costo, estado, fecha_alta, nombre) VALUES (7, 'Inactivo', '2023-11-02', 'Servicio de Lavandería');
+INSERT INTO servicio (costo, estado, fecha_alta, nombre) VALUES (7, 'Activo', '2023-11-02', 'Servicio de Lavandería');
 INSERT INTO servicio (costo, estado, fecha_alta, nombre) VALUES (20, 'Activo', '2023-11-05', 'Wi-Fi');
 INSERT INTO servicio (costo, estado, fecha_alta, nombre) VALUES (9, 'Activo', '2023-11-10', 'Estacionamiento');
 INSERT INTO servicio (costo, estado, fecha_alta, nombre) VALUES (14, 'Activo', '2023-11-15', 'Spa');
@@ -14,7 +14,7 @@ INSERT INTO servicio (costo, estado, fecha_alta, nombre) VALUES (13, 'Activo', '
 INSERT INTO servicio (costo, estado, fecha_alta, nombre) VALUES (19, 'Activo', '2023-11-28', 'Servicio de Habitaciones');
 INSERT INTO servicio (costo, estado, fecha_alta, nombre) VALUES (21, 'Activo', '2023-12-02', 'Seguridad');
 INSERT INTO servicio (costo, estado, fecha_alta, nombre) VALUES (22, 'Activo', '2023-12-05', 'Excursiones Organizadas');
-INSERT INTO servicio (costo, estado, fecha_alta, nombre) VALUES (17, 'Inactivo', '2023-12-08', 'Transporte al Aeropuerto');
+INSERT INTO servicio (costo, estado, fecha_alta, nombre) VALUES (17, 'Activo', '2023-12-08', 'Transporte al Aeropuerto');
 INSERT INTO servicio (costo, estado, fecha_alta, nombre) VALUES (23, 'Activo', '2023-12-12', 'Alquiler de Bicicletas');
 INSERT INTO servicio (costo, estado, fecha_alta, nombre) VALUES (24, 'Activo', '2023-12-15', 'Limpieza de Piscina');
 INSERT INTO servicio (costo, estado, fecha_alta, nombre) VALUES (25, 'Activo', '2023-12-18', 'Entretenimiento en Vivo');
@@ -23,13 +23,13 @@ INSERT INTO servicio (costo, estado, fecha_alta, nombre) VALUES (30, 'Activo', '
 -- Inserciones en la tabla 'usuario'
 INSERT INTO `usuario` (`dni`, `fecha_alta`, `telefono`, `apellido`, `contrasena`, `email`, `estado`, `foto`, `nombre`, `tipo`) VALUES(87654321, '2023-10-01', 987654320, 'Pérez', 'pass123', 'laura.perez@example.com', 'Activo', 'usuario1.jpg', 'Laura', 'Cliente');
 INSERT INTO `usuario` (`dni`, `fecha_alta`, `telefono`, `apellido`, `contrasena`, `email`, `estado`, `foto`, `nombre`, `tipo`) VALUES(76543212, '2023-10-02', 987654321, 'Sánchez', 'securepass', 'roberto.sanchez@example.com', 'Activo', 'usuario2.jpg', 'Roberto', 'Cliente');
-INSERT INTO `usuario` (`dni`, `fecha_alta`, `telefono`, `apellido`, `contrasena`, `email`, `estado`, `foto`, `nombre`, `tipo`) VALUES(65432123, '2023-10-03', 987654322, 'García', 'strongpass', 'maría.garcia@example.com', 'Inactivo', 'usuario3.jpg', 'María', 'Cliente');
+INSERT INTO `usuario` (`dni`, `fecha_alta`, `telefono`, `apellido`, `contrasena`, `email`, `estado`, `foto`, `nombre`, `tipo`) VALUES(65432123, '2023-10-03', 987654322, 'García', 'strongpass', 'maría.garcia@example.com', 'Activo', 'usuario3.jpg', 'María', 'Cliente');
 
 
-INSERT INTO `categoria` (`cant_personas`, `costo_servicios`, `fecha_alta`, `fecha_baja`, `estado`, `foto`, `nombre`) VALUES(2, 120, '2023-10-15', NULL, 'Activo', 'categoria1.jpg', 'Suite de Lujo');
-INSERT INTO `categoria` (`cant_personas`, `costo_servicios`, `fecha_alta`, `fecha_baja`, `estado`, `foto`, `nombre`) VALUES(3, 80, '2023-10-16', NULL, 'Activo', 'categoria2.jpg', 'Habitación Familiar');
-INSERT INTO `categoria` (`cant_personas`, `costo_servicios`, `fecha_alta`, `fecha_baja`, `estado`, `foto`, `nombre`) VALUES(2, 90, '2023-10-17', NULL, 'Activo', 'categoria3.jpg', 'Habitación Doble');
-INSERT INTO `categoria` (`cant_personas`, `costo_servicios`, `fecha_alta`, `fecha_baja`, `estado`, `foto`, `nombre`) VALUES(1, 50, '2023-10-18', NULL, 'Inactivo', 'categoria4.jpg', 'Habitación Individual');
+INSERT INTO `categoria` (`cant_personas`, `fecha_alta`, `fecha_baja`, `estado`, `foto`, `nombre`) VALUES(2, '2023-10-15', NULL, 'Activo', 'categoria1.jpg', 'Suite de Lujo');
+INSERT INTO `categoria` (`cant_personas`, `fecha_alta`, `fecha_baja`, `estado`, `foto`, `nombre`) VALUES(3, '2023-10-16', NULL, 'Activo', 'categoria2.jpg', 'Habitación Familiar');
+INSERT INTO `categoria` (`cant_personas`, `fecha_alta`, `fecha_baja`, `estado`, `foto`, `nombre`) VALUES(2, '2023-10-17', NULL, 'Activo', 'categoria3.jpg', 'Habitación Doble');
+INSERT INTO `categoria` (`cant_personas`, `fecha_alta`, `fecha_baja`, `estado`, `foto`, `nombre`) VALUES(1, '2023-10-18', NULL, 'Inactivo', 'categoria4.jpg', 'Habitación Individual');
 
 
 INSERT INTO servicio_categoria (id_categoria, id_servicio)values (1, 1);

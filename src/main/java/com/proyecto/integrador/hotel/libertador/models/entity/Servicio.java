@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,10 +19,6 @@ import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Servicio implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,16 +41,16 @@ public class Servicio implements Serializable {
 	@Column(nullable = false)
 	private String estado;
 	
-	@JsonIgnoreProperties({"hibernateLazyInitialize","handler"})
-	@ManyToMany(mappedBy = "servicios")
+	@JsonIgnoreProperties({"servicios", "hibernateLazyInitializer", "handler"})
+	@ManyToMany(mappedBy = "servicios", fetch = FetchType.LAZY)
 	private List<Categoria> categorias;
 	
 	private String foto;
 	public Servicio() {
 	}
 
-	public Servicio(Long id, String nombre, Double costo, Date fechaAlta, Date fechaBaja, String estado,
-			List<Categoria> categorias) {
+	public Servicio(Long id, String nombre, double costo, Date fechaAlta, Date fechaBaja, String estado
+			/*List<Categoria> categorias*/) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -61,7 +58,7 @@ public class Servicio implements Serializable {
 		this.fechaAlta = fechaAlta;
 		this.fechaBaja = fechaBaja;
 		this.estado = estado;
-		this.categorias = categorias;
+		//this.categorias = categorias;
 	}
 
 	public Long getId() {
@@ -79,6 +76,7 @@ public class Servicio implements Serializable {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+
 
 	public Double getCosto() {
 		return costo;
@@ -126,4 +124,16 @@ public class Servicio implements Serializable {
 	public void setFoto(String foto) {
 		this.foto = foto;
 	}
+	
+	
+	public List<Categoria> getCategorias() {
+		return categorias;
+	}
+
+	public void setCategorias(List<Categoria> categorias) {
+		this.categorias = categorias;
+	}
+
+
+	private static final long serialVersionUID = 1L;
 }

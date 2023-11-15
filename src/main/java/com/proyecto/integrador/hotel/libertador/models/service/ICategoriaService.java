@@ -7,6 +7,8 @@ import org.springframework.data.domain.Pageable;
 
 import com.proyecto.integrador.hotel.libertador.models.entity.Categoria;
 
+import jakarta.persistence.EntityNotFoundException;
+
 public interface ICategoriaService {
 	public List<Categoria> findAll();
 	
@@ -17,5 +19,7 @@ public interface ICategoriaService {
 	public Categoria save(Categoria categoria);
 	
 	public void delete(Long id);
+	
+	public void cambiarEstadoCategoria(long id) throws EntityNotFoundException;
 
 }

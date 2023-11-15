@@ -7,6 +7,8 @@ import org.springframework.data.domain.Pageable;
 
 import com.proyecto.integrador.hotel.libertador.models.entity.Usuario;
 
+import jakarta.persistence.EntityNotFoundException;
+
 public interface IUsuarioService {
 	public List<Usuario> findAll();
 	
@@ -17,5 +19,7 @@ public interface IUsuarioService {
 	public Usuario save(Usuario usuario);
 	
 	public void delete(Long id);
+	
+	public void cambiarEstadoUsuario(long id) throws EntityNotFoundException;
 	
 }

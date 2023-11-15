@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +31,7 @@ import com.proyecto.integrador.hotel.libertador.models.entity.Servicio;
 import com.proyecto.integrador.hotel.libertador.models.service.ICategoriaService;
 import com.proyecto.integrador.hotel.libertador.models.service.IServicioService;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 
 
@@ -49,11 +51,6 @@ public class CategoriaRestController {
 	@GetMapping("/categorias")
 	public List<Categoria> index() {
 		return categoriaService.findAll();
-	}
-	
-	@GetMapping("/categorias/servicios")
-	public List<Servicio> listaServicios() {
-		return servicioService.findAll();
 	}
 
 	@GetMapping("/categorias/page/{page}")
@@ -111,10 +108,9 @@ public class CategoriaRestController {
 	}
 	
 	@PutMapping("/categorias/{id}")
-	public ResponseEntity<?> update(@Valid @RequestBody Categoria categoria, @PathVariable Servicio servicioNuevo,BindingResult result, @PathVariable Long id) {
+	public ResponseEntity<?> update(@Valid @RequestBody Categoria categoria,BindingResult result, @PathVariable Long id) {
 		Categoria categoriaActual=categoriaService.findById(id);
 		Categoria categoriaActualizada=null; 
-		
 		Map<String, Object> response = new HashMap();
 		
 		if(result.hasErrors()) {
@@ -134,14 +130,8 @@ public class CategoriaRestController {
 		try {
 			categoriaActual.setCantPersonas(categoria.getCantPersonas());
 			categoriaActual.setNombre(categoria.getNombre());
-			List<Servicio>listaServiciosActual=categoria.getServicios();
-			categoriaActual.setServicios(listaServiciosActual);
-			double costoservicios=0.0;
-			for(Servicio servi:listaServiciosActual) {
-				costoservicios=costoservicios+servi.getCosto();
-			}
-			categoriaActual.setCostoServicios(costoservicios);
-			
+			categoriaActual.setServicios(categoria.getServicios());
+
 			categoriaActualizada= categoriaService.save(categoriaActual);
 			
 		} catch (DataAccessException e) {
@@ -153,5 +143,17 @@ public class CategoriaRestController {
 		response.put("categoria", categoriaService);
 		return new ResponseEntity<Map<String,Object>>(response ,HttpStatus.CREATED);	
 	}
+	
+	@Transactional
+    @PutMapping("/categorias/{id}/estado")
+    public ResponseEntity<String> cambiarEstadoCategoria(@PathVariable long id) {
+        try {
+        	categoriaService.cambiarEstadoCategoria(id);
+            return ResponseEntity.ok("Estado de la categoria se ha cambiado correctamente.");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("La categoria con ID " + id + " no existe.");
+        }
+    }
 }
 
