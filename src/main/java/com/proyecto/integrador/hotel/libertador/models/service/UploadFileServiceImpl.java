@@ -30,8 +30,9 @@ public class UploadFileServiceImpl implements IUploadFileService{
 
 		
 		if(!recurso.exists() && !recurso.isReadable()) {
-			rutaArchivo=Paths.get("src/main/resources/static/images").resolve("no-usuario.png").toAbsolutePath();
+			rutaArchivo=Paths.get("/xamp/htdocs/appBruno/").resolve("no-usuario.png").toAbsolutePath();
 			
+			// ruta ruta : C:\xampp\htdocs\appBruno/
 			recurso=new UrlResource(rutaArchivo.toUri());
 			
 			log.error("Error no se pudo cargar la imagen"+nombreFoto);
@@ -43,10 +44,11 @@ public class UploadFileServiceImpl implements IUploadFileService{
 	public String copiar(MultipartFile archivo) throws IOException {
 		String nombreArchivo=UUID.randomUUID().toString()+"_"+archivo.getOriginalFilename().replace("", "");
 		
-		Path rutaArchivo=getPath(nombreArchivo);
+		//Path rutaArchivo=getPath(nombreArchivo);
+		Path rutaArchivo=getPath("/xampp/htdocs/appBruno/"+nombreArchivo);
 		log.info(rutaArchivo.toString());
-
 		var archivoInputStream = archivo.getInputStream();
+		System.out.println(rutaArchivo.toString());
 		Files.copy(archivoInputStream, rutaArchivo);
 		archivoInputStream.close();
 	

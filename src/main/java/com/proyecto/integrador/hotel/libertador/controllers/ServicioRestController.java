@@ -38,7 +38,7 @@ import com.proyecto.integrador.hotel.libertador.models.service.IUploadFileServic
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 
-@CrossOrigin(origins= {"http://localhost:4200"})
+@CrossOrigin(origins= {"http://localhost:5173"})
 @RestController
 @RequestMapping("/api")
 public class ServicioRestController {
