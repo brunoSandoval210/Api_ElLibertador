@@ -59,7 +59,7 @@ public class Categoria implements Serializable{
     @OneToMany(mappedBy = "tipoHabitacion", fetch = FetchType.LAZY)
     private List<Habitacion> habitaciones;
     
-    private Double CostoServicios;
+
     
 
 	public Categoria() {
@@ -161,13 +161,15 @@ public class Categoria implements Serializable{
 	
 
 	public Double getCostoServicios() {
-		return CostoServicios;
+		double total=0.0;
+		List<Servicio>listaservicios=getServicios();
+		for(Servicio servi: listaservicios) {
+			total=total+servi.getCosto();
+		}
+		
+		return total;
 	}
 
-	public void setCostoServicios(Double costoServicios) {
-		CostoServicios = costoServicios;
-	}
-	
 	
 
 	@Override

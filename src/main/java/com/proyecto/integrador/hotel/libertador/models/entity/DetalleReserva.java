@@ -48,11 +48,10 @@ public class DetalleReserva implements Serializable{
     
 
     public Double getImporte() {
-        double importeHabitaciones = 0.0;
-        double importeSalones = 0.0;
+        Double importeHabitaciones = 0.0;
 
         if (habitaciones != null) {
-            importeHabitaciones = cantidadHabitaciones * habitaciones.getCostohabitacion();
+            importeHabitaciones =  habitaciones.getCostohabitacion();
         }
 
         /*if (salones != null) {

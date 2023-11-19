@@ -49,7 +49,7 @@ public class Servicio implements Serializable {
 	public Servicio() {
 	}
 
-	public Servicio(Long id, String nombre, double costo, Date fechaAlta, Date fechaBaja, String estado
+	public Servicio(Long id, String nombre, Double costo, Date fechaAlta, Date fechaBaja, String estado
 			/*List<Categoria> categorias*/) {
 		super();
 		this.id = id;
