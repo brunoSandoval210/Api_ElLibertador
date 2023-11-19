@@ -8,6 +8,5 @@ public interface IUsuarioDao extends JpaRepository<Usuario, Long>{
 
 	 Usuario findByEmailAndContrasena(String email, String contrasena);
 	
-	
 
 }

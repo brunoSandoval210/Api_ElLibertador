@@ -7,6 +7,8 @@ import org.springframework.data.domain.Pageable;
 
 import com.proyecto.integrador.hotel.libertador.models.entity.Habitacion;
 
+import jakarta.persistence.EntityNotFoundException;
+
 public interface IHabitacionService {
 public List<Habitacion> findAll();
 	
@@ -17,5 +19,7 @@ public List<Habitacion> findAll();
 	public Habitacion save(Habitacion habitacion);
 	
 	public void delete(Long id);
+	
+	public void cambiarEstadoHabitacion(long id) throws EntityNotFoundException;
 
 }

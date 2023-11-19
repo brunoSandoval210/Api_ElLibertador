@@ -33,7 +33,7 @@ public class Usuario implements Serializable {
 	@Column(nullable = false, unique = true)
 	private String email;
 
-@Column(nullable = false)				
+	@Column(nullable = false)				
 	private String contrasena;
 
 	@Column(nullable = false, unique = true)

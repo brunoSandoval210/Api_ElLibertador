@@ -29,7 +29,6 @@ import com.proyecto.integrador.hotel.libertador.models.service.IReservaService;
 @RestController
 @RequestMapping("/api")
 public class ReservaRestController {
-	//ssssssssss
 	
 	@Autowired
 	private IReservaService reservaService;
@@ -65,7 +64,8 @@ public class ReservaRestController {
 		}
 		return new ResponseEntity<Reserva>(reserva, HttpStatus.OK);
 	}
-	@DeleteMapping("/reservas/{id}")
+	
+	/*@DeleteMapping("/reservas/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id) {
 		
 		Map<String, Object> response = new HashMap();
@@ -82,7 +82,8 @@ public class ReservaRestController {
 		
 		response.put("mensaje", "La reserva se ha eliminado con exito");
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
-	}
+	}*/
+	
 	@PostMapping("/reservas")
 	public ResponseEntity<?> create(@RequestBody Reserva reserva, BindingResult result) {
 		Reserva nuevaReserva=null;

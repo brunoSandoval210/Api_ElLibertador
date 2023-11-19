@@ -36,14 +36,6 @@ public class CategoriaServiceImpl implements ICategoriaService{
 	@Override
 	@Transactional
 	public Categoria save(Categoria categoria) {
-		double totalCost = 0.0;
-	    if (categoria.getServicios() != null) {
-	        for (Servicio servicio : categoria.getServicios()) {
-	            totalCost += servicio.getCosto();
-	        }
-	    }
-	    categoria.setCostoServicios(totalCost);
-
 		return categoriaDao.save(categoria);
 	}
 

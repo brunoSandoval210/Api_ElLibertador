@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,9 +33,10 @@ import com.proyecto.integrador.hotel.libertador.models.entity.Habitacion;
 import com.proyecto.integrador.hotel.libertador.models.service.IHabitacionService;
 import com.proyecto.integrador.hotel.libertador.models.service.IUploadFileService;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 
-@CrossOrigin(origins= {"http://localhost:4200"})
+@CrossOrigin(origins= {"http://localhost:5173"})
 @RestController
 @RequestMapping("/api")
 public class HabitacionRestController {
@@ -128,6 +130,7 @@ public class HabitacionRestController {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 		}
 		try {
+			habitacionActual.setNombre(habitacion.getNombre());
 			habitacionActual.setCostohabitacion(habitacion.getCostohabitacion());
 			habitacionActual.setMaxPersonas(habitacion.getMaxPersonas());
 			habitacionActual.setTipoHabitacion(habitacion.getTipoHabitacion());
@@ -192,5 +195,16 @@ public class HabitacionRestController {
 		}
 		return new ResponseEntity<Map<String,Object>>(response ,HttpStatus.CREATED);	
 	}
+	@Transactional
+    @PutMapping("/habitaciones/{id}/estado")
+    public ResponseEntity<String> cambiarEstadoHabitacion(@PathVariable long id) {
+        try {
+        	habitacionService.cambiarEstadoHabitacion(id);
+            return ResponseEntity.ok("Estado la habitacion se ha cambiado correctamente.");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("La habitacion con ID " + id + " no existe.");
+        }
+    }
 	
 }

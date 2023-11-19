@@ -2,6 +2,7 @@ package com.proyecto.integrador.hotel.libertador.models.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -24,12 +25,15 @@ public class Habitacion implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
-	@NotEmpty(message = "El numero de habitacion no puede estar vacio")
-	@Column(unique = true)
+	//@NotEmpty(message = "El nombre de la habitacion no puede estar vacio")
+    private String nombre;
+	
+	@NotNull(message = "El número de habitación no puede ser nulo")
+	@Column(name = "num_habitacion")
     private int numHabitacion;
 	
-	@NotEmpty(message = "El costo de la habitacion no puede estar vacio")
-    private double costohabitacion;
+	@NotNull(message = "El costo de la habitacion no puede estar vacio")
+    private Double costohabitacion;
     
     private int maxPersonas;
     
@@ -52,15 +56,15 @@ public class Habitacion implements Serializable{
     @JsonIgnoreProperties({"habitaciones","hibernateLazyInitializer","handler"})
     @ManyToOne
     @JoinColumn(name ="Id_categoria_habitacion")
-    @NotEmpty(message = "La categoria de la habitacion no puede estar vacia")
+    @NotNull(message = "El tipo de habitación no puede ser nulo")
     private Categoria tipoHabitacion; 
     
 	public Habitacion() {
 	}
 
-	public Habitacion(Long id, int numHabitacion, double costohabitacion, Categoria tipoHabitacion, int maxPersonas,
+	public Habitacion(Long id, int numHabitacion, Double costohabitacion, Categoria tipoHabitacion, int maxPersonas,
 			Date fechaAlta, Date fechaBaja, String ocupante, String estado, String disponibilidad,
-			DetalleReserva detalleReservasHabitaciones) {
+			DetalleReserva detalleReservasHabitaciones, String nombre) {
 		this.id = id;
 		this.numHabitacion = numHabitacion;
 		this.costohabitacion = costohabitacion;
@@ -71,6 +75,12 @@ public class Habitacion implements Serializable{
 		this.ocupante = ocupante;
 		this.estado = estado;
 		this.disponibilidad = disponibilidad;
+		this.nombre = nombre;
+	}
+	public Double getCostoServicios() {
+		Categoria tipo=getTipoHabitacion();
+		double precioServicios=tipo.getCostoServicios();	
+		return precioServicios;
 	}
 
 	public Long getId() {
@@ -89,11 +99,11 @@ public class Habitacion implements Serializable{
 		this.numHabitacion = numHabitacion;
 	}
 
-	public double getCostohabitacion() {
+	public Double getCostohabitacion() {
 		return costohabitacion;
 	}
 
-	public void setCostohabitacion(double costohabitacion) {
+	public void setCostohabitacion(Double costohabitacion) {
 		this.costohabitacion = costohabitacion;
 	}
 
@@ -159,6 +169,14 @@ public class Habitacion implements Serializable{
 
 	public void setFoto(String foto) {
 		this.foto = foto;
+	}	
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
 	@Override
@@ -167,6 +185,11 @@ public class Habitacion implements Serializable{
 				+ ", tipoHabitacion=" + tipoHabitacion + ", maxPersonas=" + maxPersonas + ", fechaAlta=" + fechaAlta
 				+ ", fechaBaja=" + fechaBaja + ", ocupante=" + ocupante + ", estado=" + estado + ", disponibilidad="
 				+ disponibilidad + ", foto=" + foto + "]";
+	}
+	
+	public Double getCostoTotalHabitacion() {
+		double total=getCostoServicios()+getCostohabitacion();
+		return total;
 	}
 	
 	private static final long serialVersionUID = 1L;

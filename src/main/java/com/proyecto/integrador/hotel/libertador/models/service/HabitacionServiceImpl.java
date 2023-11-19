@@ -1,5 +1,6 @@
 package com.proyecto.integrador.hotel.libertador.models.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.proyecto.integrador.hotel.libertador.models.dao.IHabitacionDao;
 import com.proyecto.integrador.hotel.libertador.models.entity.Habitacion;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class HabitacionServiceImpl implements IHabitacionService{
@@ -44,6 +47,23 @@ public class HabitacionServiceImpl implements IHabitacionService{
 	@Transactional
 	public void delete(Long id) {
 		habitacionDao.deleteById(id);
+	}
+
+	@Override
+	@Transactional
+	public void cambiarEstadoHabitacion(long id) throws EntityNotFoundException {
+		Habitacion habitacion = habitacionDao.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException ("La habitacion con ID " + id + " no existe."));
+
+        if ("Activo".equals(habitacion.getEstado())) {
+        	habitacion.setEstado("Desactivado");
+        	habitacion.setFechaBaja(new Date()); 
+        } else {
+        	habitacion.setEstado("Activo");
+        	habitacion.setFechaBaja(null); 
+        }
+        habitacionDao.save(habitacion);
+		
 	}
 
 }
