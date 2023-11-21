@@ -65,5 +65,20 @@ public class HabitacionServiceImpl implements IHabitacionService{
         habitacionDao.save(habitacion);
 		
 	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public List<Habitacion> obtenerHabitacionesDisponibles(Date fechaCheckIn, Date fechaCheckOut) {
+	    List<Habitacion> habitaciones = habitacionDao.findAll();
+
+	    habitaciones.removeIf(habitacion ->
+	            habitacion.getFechasReservadas().stream()
+	                    .anyMatch(fechaReservada ->
+	                            !(fechaCheckIn.after(fechaReservada) || fechaCheckOut.before(fechaReservada))
+	                    )
+	    );
+
+	    return habitaciones;
+	}
 
 }

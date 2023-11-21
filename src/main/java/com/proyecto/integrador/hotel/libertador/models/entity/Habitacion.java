@@ -1,11 +1,13 @@
 package com.proyecto.integrador.hotel.libertador.models.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotEmpty;
@@ -59,6 +62,9 @@ public class Habitacion implements Serializable{
     @NotNull(message = "El tipo de habitación no puede ser nulo")
     private Categoria tipoHabitacion; 
     
+    @OneToMany(mappedBy = "habitaciones", cascade = CascadeType.ALL)
+    private List<DetalleReserva> detalleReservasHabitaciones;
+    
 	public Habitacion() {
 	}
 
@@ -77,6 +83,20 @@ public class Habitacion implements Serializable{
 		this.disponibilidad = disponibilidad;
 		this.nombre = nombre;
 	}
+	
+	public List<Date> getFechasReservadas() {
+        List<Date> fechasReservadas = new ArrayList<>();
+        if (detalleReservasHabitaciones != null) {
+            for (DetalleReserva detalleReserva : detalleReservasHabitaciones) {
+                fechasReservadas.add(detalleReserva.getCheckIn());
+                fechasReservadas.add(detalleReserva.getChackOut());
+            }
+        }
+        return fechasReservadas;
+    }
+	
+	
+	
 	public Double getCostoServicios() {
 		Categoria tipo=getTipoHabitacion();
 		double precioServicios=tipo.getCostoServicios();	
