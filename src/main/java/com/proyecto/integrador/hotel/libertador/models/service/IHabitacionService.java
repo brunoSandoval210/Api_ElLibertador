@@ -1,5 +1,6 @@
 package com.proyecto.integrador.hotel.libertador.models.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -21,5 +22,6 @@ public List<Habitacion> findAll();
 	public void delete(Long id);
 	
 	public void cambiarEstadoHabitacion(long id) throws EntityNotFoundException;
-
+	
+	public List<Habitacion> obtenerHabitacionesDisponibles(Date fechaCheckIn, Date fechaCheckOut);
 }

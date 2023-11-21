@@ -23,10 +23,6 @@ public class DetalleReserva implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-	private int cantidadHabitaciones;
-    
-    private int cantidadSalones;
-    
     @NotNull(message = "El checkIn no puede ser nullo")
 	@Temporal(TemporalType.DATE)
     private Date checkIn;
@@ -65,13 +61,10 @@ public class DetalleReserva implements Serializable{
 
 	}
 
-	public DetalleReserva(Long id, int cantidadHabitaciones, int cantidadSalones, Date checkIn, Date chackOut, Habitacion habitaciones /*Salon salones*/) {
+	public DetalleReserva(Long id,  Date checkIn, Date chackOut, Habitacion habitaciones /*Salon salones*/) {
 		this.id = id;
-		this.cantidadHabitaciones = cantidadHabitaciones;
-		this.cantidadSalones = cantidadSalones;
 		this.checkIn = checkIn;
 		this.chackOut = chackOut;
-
 		this.habitaciones = habitaciones;
 		//this.salones = salones;
 	}
@@ -86,21 +79,6 @@ public class DetalleReserva implements Serializable{
 		this.id = id;
 	}
 
-	public int getCantidadHabitaciones() {
-		return cantidadHabitaciones;
-	}
-
-	public void setCantidadHabitaciones(int cantidadHabitaciones) {
-		this.cantidadHabitaciones = cantidadHabitaciones;
-	}
-
-	public int getCantidadSalones() {
-		return cantidadSalones;
-	}
-
-	public void setCantidadSalones(int cantidadSalones) {
-		this.cantidadSalones = cantidadSalones;
-	}
 
 	public Date getCheckIn() {
 		return checkIn;

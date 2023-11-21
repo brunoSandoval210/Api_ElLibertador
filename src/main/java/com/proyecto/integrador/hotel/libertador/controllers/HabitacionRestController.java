@@ -1,6 +1,7 @@
 package com.proyecto.integrador.hotel.libertador.controllers;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -206,5 +208,20 @@ public class HabitacionRestController {
                     .body("La habitacion con ID " + id + " no existe.");
         }
     }
+	
+	@GetMapping("/habitaciones/disponibles")
+	public ResponseEntity<?> getHabitacionesDisponibles(
+	        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaCheckIn,
+	        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaCheckOut) {
+	    try {
+	        List<Habitacion> habitacionesDisponibles = habitacionService.obtenerHabitacionesDisponibles(fechaCheckIn, fechaCheckOut);
+	        return new ResponseEntity<>(habitacionesDisponibles, HttpStatus.OK);
+	    } catch (Exception e) {
+	        Map<String, Object> response = new HashMap<>();
+	        response.put("mensaje", "Error al obtener las habitaciones disponibles");
+	        response.put("error", e.getMessage());
+	        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+	}
 	
 }
