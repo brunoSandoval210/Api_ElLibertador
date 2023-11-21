@@ -15,37 +15,31 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-
 @Service
-public class UploadFileServiceImpl implements IUploadFileService{
+public class UploadFileServiceImpl implements IUploadFileService {
 	
-	private final Logger log=LoggerFactory.getLogger(UploadFileServiceImpl.class);
-	private final static String DIRECTORIO_UPLOAD="uploads";
+	private final Logger log = LoggerFactory.getLogger(UploadFileServiceImpl.class);
+	//http://localhost/HotelElLibertadorImg/
+	private final static String UPLOADS_DIRECTORY = "/xampp/htdocs/HotelElLibertadorImg/";
 	
 	@Override
 	public Resource cargar(String nombreFoto) throws MalformedURLException {
-		Path rutaArchivo=getPath(nombreFoto);
+		Path rutaArchivo = getPath(nombreFoto);
 		log.info(rutaArchivo.toString());
-		Resource recurso= new UrlResource(rutaArchivo.toUri());
+		Resource recurso = new UrlResource(rutaArchivo.toUri());
 
-		
-		if(!recurso.exists() && !recurso.isReadable()) {
-			rutaArchivo=Paths.get("/xamp/htdocs/appBruno/").resolve("no-usuario.png").toAbsolutePath();
-			
-			// ruta ruta : C:\xampp\htdocs\appBruno/
-			recurso=new UrlResource(rutaArchivo.toUri());
-			
-			log.error("Error no se pudo cargar la imagen"+nombreFoto);
+		if (!recurso.exists() && !recurso.isReadable()) {
+			rutaArchivo = Paths.get(UPLOADS_DIRECTORY).resolve("no-usuario.png").toAbsolutePath();
+			recurso = new UrlResource(rutaArchivo.toUri());
+			log.error("Error no se pudo cargar la imagen: " + nombreFoto);
 		}
 		return recurso;
 	}
 
 	@Override
 	public String copiar(MultipartFile archivo) throws IOException {
-		String nombreArchivo=UUID.randomUUID().toString()+"_"+archivo.getOriginalFilename().replace("", "");
-		
-		//Path rutaArchivo=getPath(nombreArchivo);
-		Path rutaArchivo=getPath("/xampp/htdocs/appBruno/"+nombreArchivo);
+		String nombreArchivo = UUID.randomUUID().toString() + "_" + archivo.getOriginalFilename().replace(" ", "");
+		Path rutaArchivo = getPath(nombreArchivo);
 		log.info(rutaArchivo.toString());
 		var archivoInputStream = archivo.getInputStream();
 		System.out.println(rutaArchivo.toString());
@@ -57,10 +51,10 @@ public class UploadFileServiceImpl implements IUploadFileService{
 
 	@Override
 	public boolean eliminar(String nombreFoto) {
-		if(nombreFoto !=null && nombreFoto.length()>0) {
-			Path rutaFotoAnterior=Paths.get("uploads").resolve(nombreFoto).toAbsolutePath();
-			File archivoFotoAnterior=rutaFotoAnterior.toFile();
-			if(archivoFotoAnterior.exists() && archivoFotoAnterior.canRead()) {
+		if (nombreFoto != null && nombreFoto.length() > 0) {
+			Path rutaFotoAnterior = Paths.get(UPLOADS_DIRECTORY).resolve(nombreFoto).toAbsolutePath();
+			File archivoFotoAnterior = rutaFotoAnterior.toFile();
+			if (archivoFotoAnterior.exists() && archivoFotoAnterior.canRead()) {
 				archivoFotoAnterior.delete();
 				return true;
 			}
@@ -70,8 +64,6 @@ public class UploadFileServiceImpl implements IUploadFileService{
 
 	@Override
 	public Path getPath(String nombreFoto) {
-
-		return Paths.get(DIRECTORIO_UPLOAD).resolve(nombreFoto).toAbsolutePath();
+		return Paths.get(UPLOADS_DIRECTORY).resolve(nombreFoto).toAbsolutePath();
 	}
-
 }
