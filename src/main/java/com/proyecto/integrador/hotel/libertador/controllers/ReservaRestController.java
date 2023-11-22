@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.proyecto.integrador.hotel.libertador.models.entity.Reserva;
 import com.proyecto.integrador.hotel.libertador.models.service.IReservaService;
 
-@CrossOrigin(origins= {"http://localhost:4200"})
+@CrossOrigin(origins= {"http://localhost:5173"})
 @RestController
 @RequestMapping("/api")
 public class ReservaRestController {
