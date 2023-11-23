@@ -41,6 +41,11 @@ public class Categoria implements Serializable{
     @Column(nullable = false)
     private String estado;
     private String foto;
+	private String descripcion_breve;
+
+	@Column(columnDefinition = "TEXT")
+	private String descripcion_larga;
+	private double precio;
     
     @JsonIgnoreProperties({"categorias", "hibernateLazyInitializer", "handler"})
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -60,15 +65,14 @@ public class Categoria implements Serializable{
     private List<Habitacion> habitaciones;
     
     
-    private double costoCategoria;
-    
 
 	public Categoria() {
 	}
 
 
-	public Categoria(Long id, String nombre, int cantPersonas, Date fechaAlta, Date fechaBaja, String estado,
-			String foto, List<Servicio> servicios, List<Habitacion> habitaciones, double costoCategoria) {
+	public Categoria(Long id, String nombre, int cantPersonas, Date fechaAlta, Date fechaBaja,
+			String estado, String foto, List<Servicio> servicios,/* List<Salon> salones,*/ List<Habitacion> habitaciones,
+					 String descripcion_breve, String descripcion_larga, double precio) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -78,8 +82,9 @@ public class Categoria implements Serializable{
 		this.estado = estado;
 		this.foto = foto;
 		this.servicios = servicios;
-		this.habitaciones = habitaciones;
-		this.costoCategoria = costoCategoria;
+		this.descripcion_breve = descripcion_breve;
+		this.descripcion_larga = descripcion_larga;
+		this.precio = precio;
 	}
 
 
@@ -149,6 +154,30 @@ public class Categoria implements Serializable{
 		this.servicios = servicios;
 	}
 
+	public String getDescripcion_breve() {
+		return descripcion_breve;
+	}
+
+	public void setDescripcion_breve(String descripcion_breve) {
+		this.descripcion_breve = descripcion_breve;
+	}
+
+	public String getDescripcion_larga() {
+		return descripcion_larga;
+	}
+
+	public void setDescripcion_larga(String descripcion_larga) {
+		this.descripcion_larga = descripcion_larga;
+	}
+
+	public double getPrecio() {
+		return precio;
+	}
+
+	public void setPrecio(double precio) {
+		this.precio = precio;
+	}
+
 	/*public List<Salon> getSalones() {
 		return salones;
 	}
@@ -189,19 +218,7 @@ public class Categoria implements Serializable{
 	}
 
 
-	public double getCostoCategoria() {
-		return costoCategoria;
-	}
-
-
-	public void setCostoCategoria(double costoCategoria) {
-		this.costoCategoria = costoCategoria;
-	}
 	
-	public double getCostoTotal(double costoTotal) {
-		costoTotal=getCostoCategoria()+getCostoServicios();
-		return costoTotal;
-	}
 
 
 	@Override
