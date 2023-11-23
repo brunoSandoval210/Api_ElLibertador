@@ -20,4 +20,7 @@ public interface IServicioService {
 	public void delete(Long id);
 	
 	public void cambiarEstadoServicio(long id) throws EntityNotFoundException;
+	
+	
+	
 }

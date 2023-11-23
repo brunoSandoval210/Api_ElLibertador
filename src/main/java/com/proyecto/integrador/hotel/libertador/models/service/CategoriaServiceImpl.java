@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.proyecto.integrador.hotel.libertador.models.dao.ICategoriaDao;
+import com.proyecto.integrador.hotel.libertador.models.dao.IServicioDao;
 import com.proyecto.integrador.hotel.libertador.models.entity.Categoria;
 import com.proyecto.integrador.hotel.libertador.models.entity.Servicio;
 
@@ -20,6 +21,9 @@ public class CategoriaServiceImpl implements ICategoriaService{
 	
 	@Autowired
 	private ICategoriaDao categoriaDao;
+	
+	@Autowired
+	private IServicioDao servicioDao;
 	
 	@Override
 	@Transactional(readOnly = true)
@@ -68,4 +72,6 @@ public class CategoriaServiceImpl implements ICategoriaService{
 
         categoriaDao.save(categoria);
     }
+	
+
 }
