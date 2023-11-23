@@ -21,6 +21,6 @@ public interface IServicioService {
 	
 	public void cambiarEstadoServicio(long id) throws EntityNotFoundException;
 	
-	
+	public List<Servicio> findByIds(List<Long> ids);
 	
 }
