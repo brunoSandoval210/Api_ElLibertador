@@ -21,5 +21,8 @@ public interface ICategoriaService {
 	public void delete(Long id);
 	
 	public void cambiarEstadoCategoria(long id) throws EntityNotFoundException;
-
+	
+	public Categoria findByNombre(String nombre);
+	
+	public void actualizarServiciosDeCategoria(Long idCategoria, List<Long> idsServicios);
 }

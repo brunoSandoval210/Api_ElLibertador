@@ -206,4 +206,16 @@ public class ServicioRestController {
                     .body("El servicio con ID " + id + " no existe.");
         }
     }
+	
+	@GetMapping("/servicios/por-ids")
+    public ResponseEntity<List<Servicio>> obtenerServiciosPorIds(@RequestParam List<Long> ids) {
+        List<Servicio> servicios = servicioService.findByIds(ids);
+
+        if (servicios.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(servicios);
+        }
+
+        return ResponseEntity.ok(servicios);
+    }
 }

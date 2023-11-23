@@ -65,4 +65,10 @@ public class ServicioServiceImpl implements IServicioService{
         servicioDao.save(servicio);
     }
 	
+	@Override
+    @Transactional(readOnly = true)
+    public List<Servicio> findByIds(List<Long> ids) {
+        return servicioDao.findAllById(ids);
+    }
+	
 }

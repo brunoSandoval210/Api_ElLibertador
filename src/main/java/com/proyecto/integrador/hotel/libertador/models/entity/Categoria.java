@@ -45,7 +45,7 @@ public class Categoria implements Serializable{
 
 	@Column(columnDefinition = "TEXT")
 	private String descripcion_larga;
-	private double precio;
+	private double precioCategoria;
     
     @JsonIgnoreProperties({"categorias", "hibernateLazyInitializer", "handler"})
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -72,7 +72,7 @@ public class Categoria implements Serializable{
 
 	public Categoria(Long id, String nombre, int cantPersonas, Date fechaAlta, Date fechaBaja,
 			String estado, String foto, List<Servicio> servicios,/* List<Salon> salones,*/ List<Habitacion> habitaciones,
-					 String descripcion_breve, String descripcion_larga, double precio) {
+					 String descripcion_breve, String descripcion_larga, double precioCategoria) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -84,7 +84,7 @@ public class Categoria implements Serializable{
 		this.servicios = servicios;
 		this.descripcion_breve = descripcion_breve;
 		this.descripcion_larga = descripcion_larga;
-		this.precio = precio;
+		this.precioCategoria = precioCategoria;
 	}
 
 
@@ -170,12 +170,12 @@ public class Categoria implements Serializable{
 		this.descripcion_larga = descripcion_larga;
 	}
 
-	public double getPrecio() {
-		return precio;
+	public double getPrecioCategoria() {
+		return precioCategoria;
 	}
 
-	public void setPrecio(double precio) {
-		this.precio = precio;
+	public void setPrecioCategoria(double precioCategoria) {
+		this.precioCategoria = precioCategoria;
 	}
 
 	/*public List<Salon> getSalones() {
@@ -197,13 +197,19 @@ public class Categoria implements Serializable{
 	
 
 	public Double getCostoServicios() {
-		double total=0.0;
-		List<Servicio>listaservicios=getServicios();
-		for(Servicio servi: listaservicios) {
-			total=total+servi.getCosto();
-		}
-		
-		return total;
+	    double total = 0.0;
+	    List<Servicio> listaservicios = getServicios();
+	    if (listaservicios != null) {
+	        for (Servicio servi : listaservicios) {
+	            total = total + servi.getCosto();
+	        }
+	    } else {
+	    	total=0.0;
+	    }
+	    return total;
+	}
+	public Double getCostoTotalCategoria() {
+		return getCostoServicios()+getPrecioCategoria();
 	}
 
 	

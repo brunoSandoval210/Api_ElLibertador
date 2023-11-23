@@ -130,7 +130,7 @@ public class CategoriaRestController {
 		try {
 			categoriaActual.setCantPersonas(categoria.getCantPersonas());
 			categoriaActual.setNombre(categoria.getNombre());
-			categoriaActual.setServicios(categoria.getServicios());
+			categoriaActual.setPrecioCategoria(categoria.getPrecioCategoria());
 
 			categoriaActualizada= categoriaService.save(categoriaActual);
 			
@@ -153,6 +153,30 @@ public class CategoriaRestController {
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("La categoria con ID " + id + " no existe.");
+        }
+    }
+	
+	@GetMapping("/categorias/nombre/{nombre}")
+    public ResponseEntity<?> buscarPorNombre(@PathVariable String nombre) {
+        Categoria categoria = categoriaService.findByNombre(nombre);
+
+        if (categoria == null) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("mensaje", "No se encontró ninguna categoría con el nombre: " + nombre);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(categoria, HttpStatus.OK);
+    }
+	
+	@PutMapping("/categorias/{id}/servicios")
+    public ResponseEntity<?> actualizarServiciosDeCategoria(@PathVariable Long id, @RequestBody List<Long> idsServicios) {
+        try {
+            categoriaService.actualizarServiciosDeCategoria(id, idsServicios);
+            return ResponseEntity.ok("Servicios de la categoría actualizados correctamente.");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("La categoría con ID " + id + " no existe.");
         }
     }
 }

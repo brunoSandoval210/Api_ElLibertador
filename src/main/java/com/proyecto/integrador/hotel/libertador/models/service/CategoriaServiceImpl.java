@@ -66,12 +66,31 @@ public class CategoriaServiceImpl implements ICategoriaService{
         	categoria.setEstado("Desactivado");
         	categoria.setFechaBaja(new Date()); 
         } else {
-        	categoria.setEstado("Activo");
-        	categoria.setFechaBaja(null); 
-        }
+			categoria.setEstado("Activo");
+			categoria.setFechaBaja(null);
+		}
 
-        categoriaDao.save(categoria);
-    }
-	
+		categoriaDao.save(categoria);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Categoria findByNombre(String nombre) {
+		return categoriaDao.findByNombre(nombre);
+	}
+
+	@Override
+	@Transactional
+	public void actualizarServiciosDeCategoria(Long idCategoria, List<Long> idsServicios) {
+		Categoria categoria = categoriaDao.findById(idCategoria)
+				.orElseThrow(() -> new EntityNotFoundException("La categoría con ID " + idCategoria + " no existe."));
+
+		List<Servicio> servicios = servicioDao.findAllById(idsServicios);
+
+		// Actualizar los servicios de la categoría
+		categoria.setServicios(servicios);
+
+		categoriaDao.save(categoria);
+	}
 
 }
