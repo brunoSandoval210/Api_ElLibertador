@@ -59,14 +59,16 @@ public class Categoria implements Serializable{
     @OneToMany(mappedBy = "tipoHabitacion", fetch = FetchType.LAZY)
     private List<Habitacion> habitaciones;
     
-
+    
+    private double costoCategoria;
     
 
 	public Categoria() {
 	}
 
-	public Categoria(Long id, String nombre, int cantPersonas, Date fechaAlta, Date fechaBaja,
-			String estado, String foto, List<Servicio> servicios,/* List<Salon> salones,*/ List<Habitacion> habitaciones) {
+
+	public Categoria(Long id, String nombre, int cantPersonas, Date fechaAlta, Date fechaBaja, String estado,
+			String foto, List<Servicio> servicios, List<Habitacion> habitaciones, double costoCategoria) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -76,7 +78,11 @@ public class Categoria implements Serializable{
 		this.estado = estado;
 		this.foto = foto;
 		this.servicios = servicios;
+		this.habitaciones = habitaciones;
+		this.costoCategoria = costoCategoria;
 	}
+
+
 
 	public Long getId() {
 		return id;
@@ -159,6 +165,7 @@ public class Categoria implements Serializable{
 		this.habitaciones = habitaciones;
 	}*/
 	
+	
 
 	public Double getCostoServicios() {
 		double total=0.0;
@@ -171,6 +178,31 @@ public class Categoria implements Serializable{
 	}
 
 	
+
+	public List<Habitacion> getHabitaciones() {
+		return habitaciones;
+	}
+
+
+	public void setHabitaciones(List<Habitacion> habitaciones) {
+		this.habitaciones = habitaciones;
+	}
+
+
+	public double getCostoCategoria() {
+		return costoCategoria;
+	}
+
+
+	public void setCostoCategoria(double costoCategoria) {
+		this.costoCategoria = costoCategoria;
+	}
+	
+	public double getCostoTotal(double costoTotal) {
+		costoTotal=getCostoCategoria()+getCostoServicios();
+		return costoTotal;
+	}
+
 
 	@Override
     public String toString() {

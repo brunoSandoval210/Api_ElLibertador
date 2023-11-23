@@ -57,7 +57,7 @@ public class ServicioRestController {
 	
 	@GetMapping("/servicios/page/{page}")
 	public Page<Servicio> index(@PathVariable Integer page) {
-	    Pageable pageable = PageRequest.of(page, 5);
+	    Pageable pageable = PageRequest.of(page, 4);
 	    return servicioService.findAll(pageable);
 	}
 	
