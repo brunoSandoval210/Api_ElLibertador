@@ -23,6 +23,7 @@ INSERT INTO servicio (costo, estado, fecha_alta, nombre) VALUES (0, 'Activo', '2
 INSERT INTO `usuario` (`dni`, `fecha_alta`, `telefono`, `apellido`, `contrasena`, `email`, `estado`, `foto`, `nombre`, `tipo`) VALUES(87654321, '2023-10-01', 987654320, 'Pérez', 'pass123', 'laura.perez@example.com', 'Activo', 'usuario1.jpg', 'Laura', 'Cliente');
 INSERT INTO `usuario` (`dni`, `fecha_alta`, `telefono`, `apellido`, `contrasena`, `email`, `estado`, `foto`, `nombre`, `tipo`) VALUES(76543212, '2023-10-02', 987654321, 'Sánchez', 'securepass', 'roberto.sanchez@example.com', 'Activo', 'usuario2.jpg', 'Roberto', 'Cliente');
 INSERT INTO `usuario` (`dni`, `fecha_alta`, `telefono`, `apellido`, `contrasena`, `email`, `estado`, `foto`, `nombre`, `tipo`) VALUES(65432123, '2023-10-03', 987654322, 'García', 'strongpass', 'maría.garcia@example.com', 'Activo', 'usuario3.jpg', 'María', 'Cliente');
+INSERT INTO `usuario` (`dni`, `fecha_alta`, `telefono`, `apellido`, `contrasena`, `email`, `estado`, `foto`, `nombre`, `tipo`) VALUES(60871996, '2023-10-03', 987654322, 'Sandoval', 'admin', 'bruno.sandoval210@gmail.com', 'Activo', 'usuario3.jpg', 'Bruno', 'Administrador');
 
 
 INSERT INTO `categoria` (`precio_categoria`, `cant_personas`, `fecha_alta`, `fecha_baja`, `estado`, `foto`, `nombre`, `descripcion_breve`, `descripcion_larga`) VALUES(300, 2, '2023-11-22', NULL, 'Activo', 'suite-imperial-1.png', 'Suite Imperial', 'Suite de lujo caracterizada por decoración palaciega, mayordomo personal, jacuzzi privado y acceso a la Sala de Épocas.', 'La Suite Imperial, nuestra habitación de mayor clase, cuenta con un amplio dormitorio de suma elegancia y un salón con cortinados de terciopelo, rica tapicería, boiserie y molduras. Incluye un mayordomo de servicio permanente, jacuzzi privado con sales y un desayuno gourmet. También permite el acceso a la Sala de Épocas con música en vivo y shows de aires victorianos.');
@@ -58,9 +59,16 @@ INSERT INTO servicio_categoria (id_categoria, id_servicio)values (5, 1);
 INSERT INTO servicio_categoria (id_categoria, id_servicio)values (5, 2);
 INSERT INTO servicio_categoria (id_categoria, id_servicio)values (5, 17);
 INSERT INTO servicio_categoria (id_categoria, id_servicio)values (6, 1);
+INSERT INTO servicio_categoria (id_categoria, id_servicio)values (6, 2);
+INSERT INTO servicio_categoria (id_categoria, id_servicio)values (6, 18);
+INSERT INTO servicio_categoria (id_categoria, id_servicio)values (6, 14);
 INSERT INTO servicio_categoria (id_categoria, id_servicio)values (6, 4);
 INSERT INTO servicio_categoria (id_categoria, id_servicio)values (6, 3);
-INSERT INTO servicio_categoria (id_categoria, id_servicio)values (6, 18);
+INSERT INTO servicio_categoria (id_categoria, id_servicio)values (6, 19);
+INSERT INTO servicio_categoria (id_categoria, id_servicio)values (7, 3);
+INSERT INTO servicio_categoria (id_categoria, id_servicio)values (7, 19);
+
+
 
 INSERT INTO `habitacion` (`costohabitacion`, `fecha_alta`, `fecha_baja`, `max_personas`, `num_habitacion`, `id_categoria_habitacion`, `disponibilidad`, `estado`, `foto`, `ocupante`) VALUES(150, '2023-10-16', NULL, 2, 101, 1, 'Disponible', 'Activo', 'habitacion1.jpg', NULL);
 INSERT INTO `habitacion` (`costohabitacion`, `fecha_alta`, `fecha_baja`, `max_personas`, `num_habitacion`, `id_categoria_habitacion`, `disponibilidad`, `estado`, `foto`, `ocupante`) VALUES(100, '2023-10-17', NULL, 4, 102, 1, 'Disponible', 'Activo', 'habitacion2.jpg', NULL);
