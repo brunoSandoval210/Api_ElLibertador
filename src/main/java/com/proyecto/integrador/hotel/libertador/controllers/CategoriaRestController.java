@@ -103,6 +103,7 @@ public class CategoriaRestController {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		response.put("mensaje", "La categoria se creo con exito");
+		response.put("idCategoria", nuevaCategoria.getId());
 		response.put("categoria", nuevaCategoria);
 		return new ResponseEntity<Map<String,Object>>(response ,HttpStatus.CREATED);
 	}
@@ -179,5 +180,11 @@ public class CategoriaRestController {
                     .body("La categoría con ID " + id + " no existe.");
         }
     }
+	
+	@GetMapping("/categorias/maxId")
+	public ResponseEntity<?> getMaxIdCategoria() {
+	    Categoria maxIdCategoria = categoriaService.findMaxIdCategoria();
+	    return new ResponseEntity<Categoria>(maxIdCategoria, HttpStatus.OK);
+	}
 }
 

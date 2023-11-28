@@ -40,7 +40,9 @@ public class CategoriaServiceImpl implements ICategoriaService{
 	@Override
 	@Transactional
 	public Categoria save(Categoria categoria) {
-		return categoriaDao.save(categoria);
+		Categoria nuevaCategoria = categoriaDao.save(categoria);
+		nuevaCategoria = categoriaDao.findMaxIdCategoria();
+		return nuevaCategoria;
 	}
 
 	@Override
@@ -91,6 +93,12 @@ public class CategoriaServiceImpl implements ICategoriaService{
 		categoria.setServicios(servicios);
 
 		categoriaDao.save(categoria);
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public Categoria findMaxIdCategoria() {
+	    return categoriaDao.findMaxIdCategoria();
 	}
 
 }
