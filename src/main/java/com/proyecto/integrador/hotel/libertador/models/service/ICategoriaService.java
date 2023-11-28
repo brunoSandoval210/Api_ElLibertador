@@ -22,9 +22,9 @@ public interface ICategoriaService {
 	
 	public void cambiarEstadoCategoria(long id) throws EntityNotFoundException;
 	
-	public Categoria findByNombre(String nombre);
-	
 	public Categoria findMaxIdCategoria();
 	
 	public void actualizarServiciosDeCategoria(Long idCategoria, List<Long> idsServicios);
+	
+	public List<Long> obtenerIdsServiciosPorCategoria(Long idCategoria);
 }
