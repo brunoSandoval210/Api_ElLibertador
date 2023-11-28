@@ -68,7 +68,6 @@ INSERT INTO servicio_categoria (id_categoria, id_servicio)values (6, 4);
 INSERT INTO servicio_categoria (id_categoria, id_servicio)values (6, 3);
 INSERT INTO servicio_categoria (id_categoria, id_servicio)values (6, 19);
 
-
 INSERT INTO `habitacion` (`costohabitacion`, `fecha_alta`, `fecha_baja`, `max_personas`, `num_habitacion`, `id_categoria_habitacion`, `disponibilidad`, `estado`, `foto`, `ocupante`) VALUES(150, '2023-10-16', NULL, 2, 101, 1, 'Disponible', 'Activo', 'habitacion1.jpg', NULL);
 INSERT INTO `habitacion` (`costohabitacion`, `fecha_alta`, `fecha_baja`, `max_personas`, `num_habitacion`, `id_categoria_habitacion`, `disponibilidad`, `estado`, `foto`, `ocupante`) VALUES(100, '2023-10-17', NULL, 4, 102, 1, 'Disponible', 'Activo', 'habitacion2.jpg', NULL);
 INSERT INTO `habitacion` (`costohabitacion`, `fecha_alta`, `fecha_baja`, `max_personas`, `num_habitacion`, `id_categoria_habitacion`, `disponibilidad`, `estado`, `foto`, `ocupante`) VALUES(120, '2023-10-18', NULL, 2, 201, 2, 'Reservada', 'Activo', 'habitacion3.jpg', 'Juan López');

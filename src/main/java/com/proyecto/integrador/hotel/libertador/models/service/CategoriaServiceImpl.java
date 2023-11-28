@@ -2,6 +2,7 @@ package com.proyecto.integrador.hotel.libertador.models.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -76,12 +77,6 @@ public class CategoriaServiceImpl implements ICategoriaService{
 	}
 
 	@Override
-	@Transactional(readOnly = true)
-	public Categoria findByNombre(String nombre) {
-		return categoriaDao.findByNombre(nombre);
-	}
-
-	@Override
 	@Transactional
 	public void actualizarServiciosDeCategoria(Long idCategoria, List<Long> idsServicios) {
 		Categoria categoria = categoriaDao.findById(idCategoria)
@@ -99,6 +94,18 @@ public class CategoriaServiceImpl implements ICategoriaService{
 	@Transactional(readOnly = true)
 	public Categoria findMaxIdCategoria() {
 	    return categoriaDao.findMaxIdCategoria();
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public List<Long> obtenerIdsServiciosPorCategoria(Long idCategoria) {
+	    Categoria categoria = categoriaDao.findById(idCategoria)
+	            .orElseThrow(() -> new EntityNotFoundException("La categoría con ID " + idCategoria + " no existe."));
+
+	    List<Servicio> servicios = categoria.getServicios();
+	    return servicios.stream()
+	            .map(Servicio::getId)
+	            .collect(Collectors.toList());
 	}
 
 }
