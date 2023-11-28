@@ -7,5 +7,7 @@ import com.proyecto.integrador.hotel.libertador.models.entity.Categoria;
 
 public interface ICategoriaDao extends JpaRepository<Categoria, Long>{
 	public Categoria findByNombre(String nombre);
+	@Query("SELECT c FROM Categoria c WHERE c.id = (SELECT MAX(c2.id) FROM Categoria c2)")
+    public Categoria findMaxIdCategoria();
 }
 

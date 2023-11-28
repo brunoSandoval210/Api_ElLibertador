@@ -24,5 +24,7 @@ public interface ICategoriaService {
 	
 	public Categoria findByNombre(String nombre);
 	
+	public Categoria findMaxIdCategoria();
+	
 	public void actualizarServiciosDeCategoria(Long idCategoria, List<Long> idsServicios);
 }
