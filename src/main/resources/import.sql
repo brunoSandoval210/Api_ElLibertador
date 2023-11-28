@@ -24,6 +24,8 @@ INSERT INTO `usuario` (`dni`, `fecha_alta`, `telefono`, `apellido`, `contrasena`
 INSERT INTO `usuario` (`dni`, `fecha_alta`, `telefono`, `apellido`, `contrasena`, `email`, `estado`, `foto`, `nombre`, `tipo`) VALUES(76543212, '2023-10-02', 987654321, 'Sánchez', 'securepass', 'roberto.sanchez@example.com', 'Activo', 'usuario2.jpg', 'Roberto', 'Cliente');
 INSERT INTO `usuario` (`dni`, `fecha_alta`, `telefono`, `apellido`, `contrasena`, `email`, `estado`, `foto`, `nombre`, `tipo`) VALUES(65432123, '2023-10-03', 987654322, 'García', 'strongpass', 'maría.garcia@example.com', 'Activo', 'usuario3.jpg', 'María', 'Cliente');
 INSERT INTO `usuario` (`dni`, `fecha_alta`, `telefono`, `apellido`, `contrasena`, `email`, `estado`, `foto`, `nombre`, `tipo`) VALUES(60871996, '2023-10-03', 987654322, 'Sandoval', 'admin', 'bruno.sandoval210@gmail.com', 'Activo', 'usuario3.jpg', 'Bruno', 'Administrador');
+INSERT INTO `usuario` (`dni`, `fecha_alta`, `telefono`, `apellido`, `contrasena`, `email`, `estado`, `foto`, `nombre`, `tipo`) VALUES(47185293, '2023-10-03', 951478236, 'Fernandez', 'admin', 'afernandez@gmail.com', 'Activo', 'usuario3.jpg', 'Alvaro', 'Administrador');
+
 
 
 INSERT INTO `categoria` (`precio_categoria`, `cant_personas`, `fecha_alta`, `fecha_baja`, `estado`, `foto`, `nombre`, `descripcion_breve`, `descripcion_larga`) VALUES(300, 2, '2023-11-22', NULL, 'Activo', 'suite-imperial-1.png', 'Suite Imperial', 'Suite de lujo caracterizada por decoración palaciega, mayordomo personal, jacuzzi privado y acceso a la Sala de Épocas.', 'La Suite Imperial, nuestra habitación de mayor clase, cuenta con un amplio dormitorio de suma elegancia y un salón con cortinados de terciopelo, rica tapicería, boiserie y molduras. Incluye un mayordomo de servicio permanente, jacuzzi privado con sales y un desayuno gourmet. También permite el acceso a la Sala de Épocas con música en vivo y shows de aires victorianos.');
@@ -65,8 +67,6 @@ INSERT INTO servicio_categoria (id_categoria, id_servicio)values (6, 14);
 INSERT INTO servicio_categoria (id_categoria, id_servicio)values (6, 4);
 INSERT INTO servicio_categoria (id_categoria, id_servicio)values (6, 3);
 INSERT INTO servicio_categoria (id_categoria, id_servicio)values (6, 19);
-INSERT INTO servicio_categoria (id_categoria, id_servicio)values (7, 3);
-
 
 INSERT INTO `habitacion` (`costohabitacion`, `fecha_alta`, `fecha_baja`, `max_personas`, `num_habitacion`, `id_categoria_habitacion`, `disponibilidad`, `estado`, `foto`, `ocupante`) VALUES(150, '2023-10-16', NULL, 2, 101, 1, 'Disponible', 'Activo', 'habitacion1.jpg', NULL);
 INSERT INTO `habitacion` (`costohabitacion`, `fecha_alta`, `fecha_baja`, `max_personas`, `num_habitacion`, `id_categoria_habitacion`, `disponibilidad`, `estado`, `foto`, `ocupante`) VALUES(100, '2023-10-17', NULL, 4, 102, 1, 'Disponible', 'Activo', 'habitacion2.jpg', NULL);
@@ -84,7 +84,25 @@ INSERT INTO `habitacion` (`costohabitacion`, `fecha_alta`, `fecha_baja`, `max_pe
 INSERT INTO `reserva` (`fecha_reserva`, `id_usuario`) VALUES('2023-11-05', 1);
 INSERT INTO `reserva` (`fecha_reserva`, `id_usuario`) VALUES('2023-11-07', 2);
 INSERT INTO `reserva` (`fecha_reserva`, `id_usuario`) VALUES('2023-11-10', 3);
-INSERT INTO `detalle_reserva` ( `chack_out`, `check_in`, `id_habitacion`, `reserva_id`) VALUES( '2023-12-12', '2023-12-07', 2, 2);
-INSERT INTO `detalle_reserva` ( `chack_out`, `check_in`, `id_habitacion`, `reserva_id`) VALUES( '2023-12-10', '2023-12-05', 1, 1);
-INSERT INTO `detalle_reserva` ( `chack_out`, `check_in`, `id_habitacion`, `reserva_id`) VALUES( '2023-12-15', '2023-12-10', 3, 3);
-INSERT INTO `detalle_reserva` ( `chack_out`, `check_in`, `id_habitacion`, `reserva_id`) VALUES( '2023-12-20', '2023-12-16', 1, 3);
+INSERT INTO `reserva` (`fecha_reserva`, `id_usuario`) VALUES('2023-11-27', 5);
+INSERT INTO `reserva` (`fecha_reserva`, `id_usuario`) VALUES('2023-11-27', 5);
+INSERT INTO `reserva` (`fecha_reserva`, `id_usuario`) VALUES('2023-11-27', 5);
+INSERT INTO `reserva` (`fecha_reserva`, `id_usuario`) VALUES('2023-11-27', 5);
+INSERT INTO `reserva` (`fecha_reserva`, `id_usuario`) VALUES('2023-11-27', 5);
+INSERT INTO `reserva` (`fecha_reserva`, `id_usuario`) VALUES('2023-11-27', 5);
+INSERT INTO `reserva` (`fecha_reserva`, `id_usuario`) VALUES('2023-11-27', 5);
+INSERT INTO `reserva` (`fecha_reserva`, `id_usuario`) VALUES('2023-11-27', 5);
+INSERT INTO `reserva` (`fecha_reserva`, `id_usuario`) VALUES('2023-11-27', 5);
+
+INSERT INTO `detalle_reserva` ( `chack_out`, `check_in`, `id_habitacion`, `reserva_id`) VALUES( '2023-12-02', '2023-12-01', 1, 1);
+INSERT INTO `detalle_reserva` ( `chack_out`, `check_in`, `id_habitacion`, `reserva_id`) VALUES( '2023-12-04', '2023-12-03', 2, 2);
+INSERT INTO `detalle_reserva` ( `chack_out`, `check_in`, `id_habitacion`, `reserva_id`) VALUES( '2023-12-06', '2023-12-05', 3, 3);
+INSERT INTO `detalle_reserva` ( `chack_out`, `check_in`, `id_habitacion`, `reserva_id`) VALUES( '2023-12-08', '2023-12-07', 4, 4);
+INSERT INTO `detalle_reserva` ( `chack_out`, `check_in`, `id_habitacion`, `reserva_id`) VALUES( '2023-12-10', '2023-12-09', 5, 5);
+INSERT INTO `detalle_reserva` ( `chack_out`, `check_in`, `id_habitacion`, `reserva_id`) VALUES( '2023-12-12', '2023-12-11', 6, 6);
+INSERT INTO `detalle_reserva` ( `chack_out`, `check_in`, `id_habitacion`, `reserva_id`) VALUES( '2023-12-14', '2023-12-13', 7, 7);
+INSERT INTO `detalle_reserva` ( `chack_out`, `check_in`, `id_habitacion`, `reserva_id`) VALUES( '2023-12-16', '2023-12-15', 8, 8);
+INSERT INTO `detalle_reserva` ( `chack_out`, `check_in`, `id_habitacion`, `reserva_id`) VALUES( '2023-12-18', '2023-12-17', 9, 9);
+INSERT INTO `detalle_reserva` ( `chack_out`, `check_in`, `id_habitacion`, `reserva_id`) VALUES( '2023-12-20', '2023-12-19', 10, 10);
+INSERT INTO `detalle_reserva` ( `chack_out`, `check_in`, `id_habitacion`, `reserva_id`) VALUES( '2023-12-22', '2023-12-21', 11, 11);
+INSERT INTO `detalle_reserva` ( `chack_out`, `check_in`, `id_habitacion`, `reserva_id`) VALUES( '2023-12-24', '2023-12-23', 12, 12);
