@@ -1,6 +1,7 @@
 package com.proyecto.integrador.hotel.libertador.models.entity;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -170,18 +171,51 @@ public class Habitacion implements Serializable{
 	public String getEstado() {
 		return estado;
 	}
+	
+	
+	public void setDisponibilidad(String disponibilidad) {
+		this.disponibilidad = disponibilidad;
+	}
 
+
+
+	
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
 
 	public String getDisponibilidad() {
-		return disponibilidad;
+	    List<Date> fechasReservadas = getFechasReservadas();
+
+	    if (fechasReservadas.isEmpty()) {
+	        // Si no hay fechas reservadas, la habitación está disponible
+	        return "disponible";
+	    } else {
+	        Date fechaActual = new Date();
+
+	        for (int i = 0; i < fechasReservadas.size(); i += 2) {
+	            Date checkIn = fechasReservadas.get(i);
+	            Date checkOut = fechasReservadas.get(i + 1);
+	            System.out.println("Fecha actual: " + fechaActual);
+	            System.out.println("Check-in: " + checkIn);
+	            System.out.println("Check-out: " + checkOut);
+
+	            if (!fechaActual.before(checkIn) && fechaActual.before(checkOut)) {
+	                // La fecha actual está después del check-in y antes del check-out, la habitación está reservada
+	                return "reservado hasta " + formatearFecha(checkOut);
+	            }
+	        }
+
+	        // Si no está dentro de ningún período de reserva, la habitación está disponible
+	        return "disponible";
+	    }
 	}
 
-	public void setDisponibilidad(String disponibilidad) {
-		this.disponibilidad = disponibilidad;
+	private String formatearFecha(Date fecha) {
+	    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM");
+	    return sdf.format(fecha);
 	}
+
 
 	public String getFoto() {
 		return foto;
@@ -211,6 +245,7 @@ public class Habitacion implements Serializable{
 		double total=getCostoServicios()+getCostohabitacion();
 		return total;
 	}
+	
 	
 	private static final long serialVersionUID = 1L;
 }
