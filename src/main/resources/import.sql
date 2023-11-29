@@ -68,18 +68,18 @@ INSERT INTO servicio_categoria (id_categoria, id_servicio)values (6, 4);
 INSERT INTO servicio_categoria (id_categoria, id_servicio)values (6, 3);
 INSERT INTO servicio_categoria (id_categoria, id_servicio)values (6, 19);
 
-INSERT INTO `habitacion` (`costohabitacion`, `fecha_alta`, `fecha_baja`, `max_personas`, `num_habitacion`, `id_categoria_habitacion`, `disponibilidad`, `estado`, `foto`, `ocupante`) VALUES(150, '2023-10-16', NULL, 2, 101, 1, 'Disponible', 'Activo', 'habitacion1.jpg', NULL);
-INSERT INTO `habitacion` (`costohabitacion`, `fecha_alta`, `fecha_baja`, `max_personas`, `num_habitacion`, `id_categoria_habitacion`, `disponibilidad`, `estado`, `foto`, `ocupante`) VALUES(100, '2023-10-17', NULL, 4, 102, 1, 'Disponible', 'Activo', 'habitacion2.jpg', NULL);
-INSERT INTO `habitacion` (`costohabitacion`, `fecha_alta`, `fecha_baja`, `max_personas`, `num_habitacion`, `id_categoria_habitacion`, `disponibilidad`, `estado`, `foto`, `ocupante`) VALUES(120, '2023-10-18', NULL, 2, 201, 2, 'Reservada', 'Activo', 'habitacion3.jpg', 'Juan López');
-INSERT INTO `habitacion` (`costohabitacion`, `fecha_alta`, `fecha_baja`, `max_personas`, `num_habitacion`, `id_categoria_habitacion`, `disponibilidad`, `estado`, `foto`, `ocupante`) VALUES(120, '2023-10-18', NULL, 2, 202, 2, 'Reservada', 'Activo', 'habitacion3.jpg', 'Juan López');
-INSERT INTO `habitacion` (`costohabitacion`, `fecha_alta`, `fecha_baja`, `max_personas`, `num_habitacion`, `id_categoria_habitacion`, `disponibilidad`, `estado`, `foto`, `ocupante`) VALUES(100, '2023-10-17', NULL, 4, 301, 3, 'Disponible', 'Activo', 'habitacion2.jpg', NULL);
-INSERT INTO `habitacion` (`costohabitacion`, `fecha_alta`, `fecha_baja`, `max_personas`, `num_habitacion`, `id_categoria_habitacion`, `disponibilidad`, `estado`, `foto`, `ocupante`) VALUES(100, '2023-10-17', NULL, 4, 302, 3, 'Disponible', 'Activo', 'habitacion2.jpg', NULL);
-INSERT INTO `habitacion` (`costohabitacion`, `fecha_alta`, `fecha_baja`, `max_personas`, `num_habitacion`, `id_categoria_habitacion`, `disponibilidad`, `estado`, `foto`, `ocupante`) VALUES(100, '2023-10-17', NULL, 4, 401, 4, 'Disponible', 'Activo', 'habitacion2.jpg', NULL);
-INSERT INTO `habitacion` (`costohabitacion`, `fecha_alta`, `fecha_baja`, `max_personas`, `num_habitacion`, `id_categoria_habitacion`, `disponibilidad`, `estado`, `foto`, `ocupante`) VALUES(100, '2023-10-17', NULL, 4, 402, 4, 'Disponible', 'Activo', 'habitacion2.jpg', NULL);
-INSERT INTO `habitacion` (`costohabitacion`, `fecha_alta`, `fecha_baja`, `max_personas`, `num_habitacion`, `id_categoria_habitacion`, `disponibilidad`, `estado`, `foto`, `ocupante`) VALUES(100, '2023-10-17', NULL, 4, 501, 5, 'Disponible', 'Activo', 'habitacion2.jpg', NULL);
-INSERT INTO `habitacion` (`costohabitacion`, `fecha_alta`, `fecha_baja`, `max_personas`, `num_habitacion`, `id_categoria_habitacion`, `disponibilidad`, `estado`, `foto`, `ocupante`) VALUES(100, '2023-10-17', NULL, 4, 502, 5, 'Disponible', 'Activo', 'habitacion2.jpg', NULL);
-INSERT INTO `habitacion` (`costohabitacion`, `fecha_alta`, `fecha_baja`, `max_personas`, `num_habitacion`, `id_categoria_habitacion`, `disponibilidad`, `estado`, `foto`, `ocupante`) VALUES(100, '2023-10-17', NULL, 4, 601, 6, 'Disponible', 'Activo', 'habitacion2.jpg', NULL);
-INSERT INTO `habitacion` (`costohabitacion`, `fecha_alta`, `fecha_baja`, `max_personas`, `num_habitacion`, `id_categoria_habitacion`, `disponibilidad`, `estado`, `foto`, `ocupante`) VALUES(100, '2023-10-17', NULL, 4, 602, 6, 'Disponible', 'Activo', 'habitacion2.jpg', NULL);
+INSERT INTO `habitacion` (`costohabitacion`, `fecha_alta`, `fecha_baja`, `max_personas`, `num_habitacion`, `id_categoria_habitacion`, `estado`, `foto`) VALUES(100, '2023-10-17', NULL, 4, 102, 1,  'Activo', 'habitacion2.jpg');
+INSERT INTO `habitacion` (`costohabitacion`, `fecha_alta`, `fecha_baja`, `max_personas`, `num_habitacion`, `id_categoria_habitacion`, `estado`, `foto`) VALUES(150, '2023-10-16', NULL, 2, 101, 1,  'Activo', 'habitacion1.jpg');
+INSERT INTO `habitacion` (`costohabitacion`, `fecha_alta`, `fecha_baja`, `max_personas`, `num_habitacion`, `id_categoria_habitacion`, `estado`, `foto`) VALUES(120, '2023-10-18', NULL, 2, 201, 2, 'Activo', 'habitacion3.jpg');
+INSERT INTO `habitacion` (`costohabitacion`, `fecha_alta`, `fecha_baja`, `max_personas`, `num_habitacion`, `id_categoria_habitacion`, `estado`, `foto`) VALUES(120, '2023-10-18', NULL, 2, 202, 2, 'Activo', 'habitacion3.jpg');
+INSERT INTO `habitacion` (`costohabitacion`, `fecha_alta`, `fecha_baja`, `max_personas`, `num_habitacion`, `id_categoria_habitacion`, `estado`, `foto`) VALUES(100, '2023-10-17', NULL, 4, 301, 3,  'Activo', 'habitacion2.jpg');
+INSERT INTO `habitacion` (`costohabitacion`, `fecha_alta`, `fecha_baja`, `max_personas`, `num_habitacion`, `id_categoria_habitacion`, `estado`, `foto`) VALUES(100, '2023-10-17', NULL, 4, 302, 3,  'Activo', 'habitacion2.jpg');
+INSERT INTO `habitacion` (`costohabitacion`, `fecha_alta`, `fecha_baja`, `max_personas`, `num_habitacion`, `id_categoria_habitacion`, `estado`, `foto`) VALUES(100, '2023-10-17', NULL, 4, 401, 4,  'Activo', 'habitacion2.jpg');
+INSERT INTO `habitacion` (`costohabitacion`, `fecha_alta`, `fecha_baja`, `max_personas`, `num_habitacion`, `id_categoria_habitacion`, `estado`, `foto`) VALUES(100, '2023-10-17', NULL, 4, 402, 4,  'Activo', 'habitacion2.jpg');
+INSERT INTO `habitacion` (`costohabitacion`, `fecha_alta`, `fecha_baja`, `max_personas`, `num_habitacion`, `id_categoria_habitacion`, `estado`, `foto`) VALUES(100, '2023-10-17', NULL, 4, 501, 5,  'Activo', 'habitacion2.jpg');
+INSERT INTO `habitacion` (`costohabitacion`, `fecha_alta`, `fecha_baja`, `max_personas`, `num_habitacion`, `id_categoria_habitacion`, `estado`, `foto`) VALUES(100, '2023-10-17', NULL, 4, 502, 5,  'Activo', 'habitacion2.jpg');
+INSERT INTO `habitacion` (`costohabitacion`, `fecha_alta`, `fecha_baja`, `max_personas`, `num_habitacion`, `id_categoria_habitacion`, `estado`, `foto`) VALUES(100, '2023-10-17', NULL, 4, 601, 6,  'Activo', 'habitacion2.jpg');
+INSERT INTO `habitacion` (`costohabitacion`, `fecha_alta`, `fecha_baja`, `max_personas`, `num_habitacion`, `id_categoria_habitacion`, `estado`, `foto`) VALUES(100, '2023-10-17', NULL, 4, 602, 6,  'Activo', 'habitacion2.jpg');
 
 INSERT INTO `reserva` (`fecha_reserva`, `id_usuario`) VALUES('2023-11-05', 1);
 INSERT INTO `reserva` (`fecha_reserva`, `id_usuario`) VALUES('2023-11-07', 2);
@@ -94,8 +94,8 @@ INSERT INTO `reserva` (`fecha_reserva`, `id_usuario`) VALUES('2023-11-27', 5);
 INSERT INTO `reserva` (`fecha_reserva`, `id_usuario`) VALUES('2023-11-27', 5);
 INSERT INTO `reserva` (`fecha_reserva`, `id_usuario`) VALUES('2023-11-27', 5);
 
-INSERT INTO `detalle_reserva` ( `chack_out`, `check_in`, `id_habitacion`, `reserva_id`) VALUES( '2023-12-02', '2023-12-01', 1, 1);
-INSERT INTO `detalle_reserva` ( `chack_out`, `check_in`, `id_habitacion`, `reserva_id`) VALUES( '2023-12-04', '2023-12-03', 2, 2);
+INSERT INTO `detalle_reserva` ( `chack_out`, `check_in`, `id_habitacion`, `reserva_id`) VALUES( '2023-11-30', '2023-11-25', 1, 1);
+INSERT INTO `detalle_reserva` ( `chack_out`, `check_in`, `id_habitacion`, `reserva_id`) VALUES( '2023-12-26', '2023-11-03', 2, 2);
 INSERT INTO `detalle_reserva` ( `chack_out`, `check_in`, `id_habitacion`, `reserva_id`) VALUES( '2023-12-06', '2023-12-05', 3, 3);
 INSERT INTO `detalle_reserva` ( `chack_out`, `check_in`, `id_habitacion`, `reserva_id`) VALUES( '2023-12-08', '2023-12-07', 4, 4);
 INSERT INTO `detalle_reserva` ( `chack_out`, `check_in`, `id_habitacion`, `reserva_id`) VALUES( '2023-12-10', '2023-12-09', 5, 5);
@@ -105,4 +105,4 @@ INSERT INTO `detalle_reserva` ( `chack_out`, `check_in`, `id_habitacion`, `reser
 INSERT INTO `detalle_reserva` ( `chack_out`, `check_in`, `id_habitacion`, `reserva_id`) VALUES( '2023-12-18', '2023-12-17', 9, 9);
 INSERT INTO `detalle_reserva` ( `chack_out`, `check_in`, `id_habitacion`, `reserva_id`) VALUES( '2023-12-20', '2023-12-19', 10, 10);
 INSERT INTO `detalle_reserva` ( `chack_out`, `check_in`, `id_habitacion`, `reserva_id`) VALUES( '2023-12-22', '2023-12-21', 11, 11);
-INSERT INTO `detalle_reserva` ( `chack_out`, `check_in`, `id_habitacion`, `reserva_id`) VALUES( '2023-12-24', '2023-12-23', 12, 12);
+INSERT INTO `detalle_reserva` ( `chack_out`, `check_in`, `id_habitacion`, `reserva_id`) VALUES( '2023-11-30', '2023-11-23', 12, 12);
