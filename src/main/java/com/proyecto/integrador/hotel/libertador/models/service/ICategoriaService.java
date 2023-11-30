@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.proyecto.integrador.hotel.libertador.models.entity.Categoria;
-import com.proyecto.integrador.hotel.libertador.models.entity.Servicio;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -27,6 +26,5 @@ public interface ICategoriaService {
 	
 	public void actualizarServiciosDeCategoria(Long idCategoria, List<Long> idsServicios);
 	
-	public List<Servicio> obtenerServiciosPorCategoria(Long idCategoria);
-
+	public List<Long> obtenerIdsServiciosPorCategoria(Long idCategoria);
 }

@@ -52,6 +52,7 @@ public class Usuario implements Serializable {
 	@Column(nullable = false)
 	private String tipo;
 
+	@NotNull(message = "La fecha de alta no puede ser nullo")
 	@Temporal(TemporalType.DATE)
 	private Date fechaAlta;
 

@@ -141,7 +141,7 @@ public class CategoriaRestController {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		response.put("mensaje", "La categoria se actualizo con exito");
-		response.put("categoria", categoriaActualizada);
+		response.put("categoria", categoriaService);
 		return new ResponseEntity<Map<String,Object>>(response ,HttpStatus.CREATED);	
 	}
 	
@@ -175,16 +175,15 @@ public class CategoriaRestController {
 	    return new ResponseEntity<Categoria>(maxIdCategoria, HttpStatus.OK);
 	}
 	
-	@GetMapping("/categorias/{id}/servicios")
-	public ResponseEntity<?> obtenerServiciosPorCategoria(@PathVariable Long id) {
+	@GetMapping("/categorias/{id}/servicios/ids")
+	public ResponseEntity<?> obtenerIdsServiciosPorCategoria(@PathVariable Long id) {
 	    try {
-	        List<Servicio> servicios = categoriaService.obtenerServiciosPorCategoria(id);
-	        return new ResponseEntity<List<Servicio>>(servicios, HttpStatus.OK);
+	        List<Long> idsServicios = categoriaService.obtenerIdsServiciosPorCategoria(id);
+	        return new ResponseEntity<List<Long>>(idsServicios, HttpStatus.OK);
 	    } catch (EntityNotFoundException e) {
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND)
 	                .body("La categoría con ID " + id + " no existe.");
 	    }
 	}
-
 }
 

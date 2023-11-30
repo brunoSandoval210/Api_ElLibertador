@@ -197,6 +197,9 @@ public class Habitacion implements Serializable{
 	        for (int i = 0; i < fechasReservadas.size(); i += 2) {
 	            Date checkIn = fechasReservadas.get(i);
 	            Date checkOut = fechasReservadas.get(i + 1);
+	            System.out.println("Fecha actual: " + fechaActual);
+	            System.out.println("Check-in: " + checkIn);
+	            System.out.println("Check-out: " + checkOut);
 
 	            if (!fechaActual.before(checkIn) && fechaActual.before(checkOut)) {
 	                // La fecha actual está después del check-in y antes del check-out, la habitación está reservada

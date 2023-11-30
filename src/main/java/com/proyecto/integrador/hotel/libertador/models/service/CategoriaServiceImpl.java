@@ -98,10 +98,14 @@ public class CategoriaServiceImpl implements ICategoriaService{
 	
 	@Override
 	@Transactional(readOnly = true)
-	public List<Servicio> obtenerServiciosPorCategoria(Long idCategoria) {
+	public List<Long> obtenerIdsServiciosPorCategoria(Long idCategoria) {
 	    Categoria categoria = categoriaDao.findById(idCategoria)
 	            .orElseThrow(() -> new EntityNotFoundException("La categoría con ID " + idCategoria + " no existe."));
 
-	    return categoria.getServicios();
+	    List<Servicio> servicios = categoria.getServicios();
+	    return servicios.stream()
+	            .map(Servicio::getId)
+	            .collect(Collectors.toList());
 	}
+
 }
