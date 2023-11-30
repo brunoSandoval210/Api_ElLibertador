@@ -33,6 +33,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.proyecto.integrador.hotel.libertador.models.entity.Archivos;
 import com.proyecto.integrador.hotel.libertador.models.entity.Habitacion;
+import com.proyecto.integrador.hotel.libertador.models.service.IArchivosService;
 import com.proyecto.integrador.hotel.libertador.models.service.IHabitacionService;
 import com.proyecto.integrador.hotel.libertador.models.service.IUploadFileService;
 
@@ -48,6 +49,9 @@ public class HabitacionRestController {
 	
 	@Autowired
 	private IUploadFileService uploadService;
+	
+	@Autowired
+	private IArchivosService archivoService;
 	
 	private final Logger log=LoggerFactory.getLogger(HabitacionRestController.class);
 	
@@ -111,45 +115,6 @@ public class HabitacionRestController {
 		return new ResponseEntity<Map<String,Object>>(response ,HttpStatus.CREATED);
 	}
 	
-	@PutMapping("/habitaciones/{id}")
-	public ResponseEntity<?> update(@Valid @RequestBody Habitacion habitacion, BindingResult result, @PathVariable Long id) {
-		Habitacion habitacionActual=habitacionService.findById(id);
-		Habitacion habitacionActulizada=null; 
-		
-		Map<String, Object> response = new HashMap();
-		
-		if(result.hasErrors()) {
-			List<String> errors=result.getFieldErrors()
-					.stream()
-					.map(err->"El campo '"+err.getField()+"' "+err.getDefaultMessage())
-					.collect(Collectors.toList());
-			
-			response.put("errors", errors);
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
-		}
-		
-		if (habitacionActual == null) {
-			response.put("mensaje", "Error, no se puede editar, la habitacion ID: ".concat(id.toString().concat(" no existe en la base de datos")));
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
-		}
-		try {
-			habitacionActual.setNombre(habitacion.getNombre());
-			habitacionActual.setCostohabitacion(habitacion.getCostohabitacion());
-			habitacionActual.setMaxPersonas(habitacion.getMaxPersonas());
-			habitacionActual.setTipoHabitacion(habitacion.getTipoHabitacion());
-			
-			habitacionActulizada= habitacionService.save(habitacionActual);
-			
-		} catch (DataAccessException e) {
-			response.put("mensaje", "Error al actualizar la habitacion en la base de datos");
-			response.put("error", e.getMessage().concat(":").concat(e.getMostSpecificCause().getMessage()));
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		response.put("mensaje", "la habitacion se actualizo con exito");
-		response.put("habitacion", habitacionActual);
-		return new ResponseEntity<Map<String,Object>>(response ,HttpStatus.CREATED);	
-	}
-	
 	@DeleteMapping("/habitaciones/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id) {
 		
@@ -157,13 +122,12 @@ public class HabitacionRestController {
 		
 		try {
 			Habitacion habitacion=habitacionService.findById(id);
-			List<Archivos> fotos = habitacion.getFoto();
-			
-			if (fotos != null && !fotos.isEmpty()) {
-	            for (Archivos foto : fotos) {
-	                uploadService.eliminar(foto.getNombre());
-	            }
-	        }
+			List<Archivos> archivos = habitacion.getFoto();
+			 for (Archivos archivo : archivos) {
+			        String nombreFotoAnterior = archivo.getNombre();
+			        uploadService.eliminar(nombreFotoAnterior);
+			        archivoService.delete(archivo.getId());
+			    }
 			habitacionService.delete(id);
 		} catch (DataAccessException e) {
 			response.put("mensaje", "Error al elimnar la habitacion en la base de datos");
@@ -175,7 +139,33 @@ public class HabitacionRestController {
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 	}
 	
-	
+	@PostMapping("habitaciones/upload")
+	public ResponseEntity<?> upload(@RequestParam("archivo") MultipartFile archivo, @RequestParam("id") Long id){
+		Map<String, Object> response = new HashMap();
+		
+		Habitacion habitacion=habitacionService.findById(id);
+		
+		if(!archivo.isEmpty()) {
+			String nombreArchivo=null;
+			try {
+				nombreArchivo=uploadService.copiar(archivo);
+			} catch (IOException e) {
+				response.put("mensaje", "Error al subir la imagen");
+				response.put("error", e.getMessage().concat(":").concat(e.getCause().getMessage()));
+				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+			
+			//String nombreFotoAnterior=habitacion.getFoto();
+			
+			//uploadService.eliminar(nombreFotoAnterior);
+			
+			//habitacion.setFoto(nombreArchivo);
+			habitacionService.save(habitacion);
+			response.put("habitacion", habitacion);
+			response.put("mensaje", "Se ha subido correctamente la imagen"+nombreArchivo);
+		}
+		return new ResponseEntity<Map<String,Object>>(response ,HttpStatus.CREATED);	
+	}
 	@Transactional
     @PutMapping("/habitaciones/{id}/estado")
     public ResponseEntity<String> cambiarEstadoHabitacion(@PathVariable long id) {

@@ -23,7 +23,7 @@ import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Usuario implements Serializable {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -33,7 +33,7 @@ public class Usuario implements Serializable {
 	@Column(nullable = false, unique = true)
 	private String email;
 
-	@Column(nullable = false)				
+	@Column(nullable = false)
 	private String contrasena;
 
 	@Column(nullable = false, unique = true)
@@ -52,7 +52,6 @@ public class Usuario implements Serializable {
 	@Column(nullable = false)
 	private String tipo;
 
-	@NotNull(message = "La fecha de alta no puede ser nullo")
 	@Temporal(TemporalType.DATE)
 	private Date fechaAlta;
 
@@ -64,21 +63,19 @@ public class Usuario implements Serializable {
 	private Date fechaBaja;
 
 	private String estado;
-	@JsonIgnoreProperties(value={"usuario","hibernateLazyInitializer","handler"}, allowGetters = true)
-	@OneToMany(mappedBy = "usuario",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnoreProperties(value = { "usuario", "hibernateLazyInitializer", "handler" }, allowGetters = true)
+	@OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Reserva> reservas;
-	
+
 	@OneToMany(mappedBy = "usuario")
 	private List<Archivos> foto;
 
 	public Usuario() {
-		this.reservas=new ArrayList<>();
+		this.reservas = new ArrayList<>();
 	}
 
-	public Usuario(Long id, String email, String contrasena, int dNI,
-			String nombre, String apellido, int telefono, String tipo,
-			Date fechaAlta, Date fechaBaja, String estado,
-			List<Reserva> reservas) {
+	public Usuario(Long id, String email, String contrasena, int dNI, String nombre, String apellido, int telefono,
+			String tipo, Date fechaAlta, Date fechaBaja, String estado, List<Reserva> reservas) {
 		super();
 		this.id = id;
 		this.email = email;
@@ -93,7 +90,6 @@ public class Usuario implements Serializable {
 		this.estado = estado;
 		this.reservas = reservas;
 	}
-
 
 	public Long getId() {
 		return id;
@@ -191,7 +187,6 @@ public class Usuario implements Serializable {
 		this.reservas = reservas;
 	}
 
-
 	public List<Archivos> getFoto() {
 		return foto;
 	}
@@ -206,7 +201,7 @@ public class Usuario implements Serializable {
 				+ nombre + ", apellido=" + apellido + ", telefono=" + telefono + ", tipo=" + tipo + ", fechaAlta="
 				+ fechaAlta + ", fechaBaja=" + fechaBaja + ", estado=" + estado + ", reservas=" + reservas + "]";
 	}
-	
+
 	private static final long serialVersionUID = 1L;
 
 }

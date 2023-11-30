@@ -2,6 +2,7 @@ package com.proyecto.integrador.hotel.libertador.controllers;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -33,7 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.proyecto.integrador.hotel.libertador.models.entity.Archivos;
 import com.proyecto.integrador.hotel.libertador.models.entity.Servicio;
 import com.proyecto.integrador.hotel.libertador.models.entity.Usuario;
-import com.proyecto.integrador.hotel.libertador.models.service.IArchivoService;
+import com.proyecto.integrador.hotel.libertador.models.service.IArchivosService;
 import com.proyecto.integrador.hotel.libertador.models.service.IServicioService;
 import com.proyecto.integrador.hotel.libertador.models.service.IUploadFileService;
 
@@ -48,7 +49,10 @@ public class ServicioRestController {
 	private IServicioService servicioService;
 	
 	@Autowired
-	private IArchivoService archivoService;
+	private IUploadFileService uploadService;
+	
+	@Autowired
+	private IArchivosService archivoService;
 	
 	private final Logger log=LoggerFactory.getLogger(ServicioRestController.class);
 	
@@ -155,13 +159,13 @@ public class ServicioRestController {
 		
 		try {
 			Servicio servicio=servicioService.findById(id);
-			List<Archivos> fotos = servicio.getFoto();
-			if (fotos != null && !fotos.isEmpty()) {
-	            for (Archivos foto : fotos) {
-	            	archivoService.eliminar(foto.getNombre());
-	            }
-	        }
-			
+			List<Archivos> archivos=servicio.getFoto();
+			for(Archivos archivo: archivos) {
+				String nombreFotoAnterior=archivo.getNombre();
+				uploadService.eliminar(nombreFotoAnterior);
+				archivoService.delete(archivo.getId());
+				
+			}
 			servicioService.delete(id);
 		} catch (DataAccessException e) {
 			response.put("mensaje", "Error al elimnar el servicio en la base de datos");
@@ -172,7 +176,7 @@ public class ServicioRestController {
 		response.put("mensaje", "El servicio eliminado con exito");
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 	}
-
+	
 	
 	@Transactional
     @PutMapping("/servicios/{id}/estado")

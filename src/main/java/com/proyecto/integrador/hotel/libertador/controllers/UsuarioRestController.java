@@ -34,7 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.proyecto.integrador.hotel.libertador.models.entity.Archivos;
 import com.proyecto.integrador.hotel.libertador.models.entity.Usuario;
-import com.proyecto.integrador.hotel.libertador.models.service.IArchivoService;
+import com.proyecto.integrador.hotel.libertador.models.service.IArchivosService;
 import com.proyecto.integrador.hotel.libertador.models.service.IUploadFileService;
 import com.proyecto.integrador.hotel.libertador.models.service.IUsuarioService;
 
@@ -50,7 +50,10 @@ public class UsuarioRestController {
 	private IUsuarioService usuarioService;
 	
 	@Autowired
-	private IArchivoService archivosService;
+	private IUploadFileService uploadService;
+	
+	@Autowired
+	private IArchivosService archivoService;
 	
 	private final Logger log=LoggerFactory.getLogger(UsuarioRestController.class);
 
@@ -168,15 +171,12 @@ public class UsuarioRestController {
 		
 		try {
 			Usuario usuario=usuarioService.findById(id);
-			List<Archivos> fotos = usuario.getFoto();
-			
-	
-			
-			if (fotos != null && !fotos.isEmpty()) {
-	            for (Archivos foto : fotos) {
-	            	archivosService.eliminar(foto.getNombre());
-	            }
-	        }
+			List<Archivos> archivos = usuario.getFoto();
+			 for (Archivos archivo : archivos) {
+			        String nombreFotoAnterior = archivo.getNombre();
+			        uploadService.eliminar(nombreFotoAnterior);
+			        archivoService.delete(archivo.getId());
+			    }
 			usuarioService.delete(id);
 		} catch (DataAccessException e) {
 			response.put("mensaje", "Error al elimnar el usuario en la base de datos");
@@ -188,9 +188,35 @@ public class UsuarioRestController {
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 	}
 	
-	
-	
-	/*@GetMapping("upload/img/{nombreFoto:.+}")
+	/*@PostMapping("usuarios/upload")
+	public ResponseEntity<?> upload(@RequestParam("archivo") MultipartFile archivo, @RequestParam("id") Long id){
+		Map<String, Object> response = new HashMap();
+		
+		Usuario usuario=usuarioService.findById(id);
+		
+		if(!archivo.isEmpty()) {
+			String nombreArchivo=null;
+			try {
+				nombreArchivo=uploadService.copiar(archivo);
+			} catch (IOException e) {
+				response.put("mensaje", "Error al subir la imagen");
+				response.put("error", e.getMessage().concat(":").concat(e.getCause().getMessage()));
+				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+			
+			String nombreFotoAnterior=usuario.getFoto();
+			
+			uploadService.eliminar(nombreFotoAnterior);
+			
+			usuario.setFoto(nombreArchivo);
+			usuarioService.save(usuario);
+			response.put("usuario", usuario);
+			response.put("mensaje", "Se ha subido correctamente la imagen"+nombreArchivo);
+		}
+		return new ResponseEntity<Map<String,Object>>(response ,HttpStatus.CREATED);	
+	}
+	*/
+	@GetMapping("upload/img/{nombreFoto:.+}")
 	public ResponseEntity<Resource> verFoto(@PathVariable String nombreFoto){
 
 		Resource recurso=null;
@@ -217,7 +243,7 @@ public class UsuarioRestController {
                     .body("El usuario con ID " + id + " no existe.");
         }
     }
-	*/
+	
 	@PostMapping("/usuarios/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> loginRequest) {
         String email = loginRequest.get("email");

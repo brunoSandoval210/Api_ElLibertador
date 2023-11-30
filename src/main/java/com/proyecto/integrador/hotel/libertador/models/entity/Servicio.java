@@ -24,12 +24,12 @@ public class Servicio implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@Column(nullable = false, unique = true)
 	private String nombre;
-	
+
 	private Double costo;
-	
+
 	@NotNull(message = "La fecha de alta no puede ser nullo")
 	@Temporal(TemporalType.DATE)
 	private Date fechaAlta;
@@ -38,21 +38,22 @@ public class Servicio implements Serializable {
 	 */
 	@Temporal(TemporalType.DATE)
 	private Date fechaBaja;
-	
+
 	@Column(nullable = false)
 	private String estado;
-	
-	@JsonIgnoreProperties({"servicios", "hibernateLazyInitializer", "handler"})
+
+	@JsonIgnoreProperties({ "servicios", "hibernateLazyInitializer", "handler" })
 	@ManyToMany(mappedBy = "servicios", fetch = FetchType.LAZY)
 	private List<Categoria> categorias;
-	
+
 	@OneToMany(mappedBy = "servicio")
 	private List<Archivos> foto;
+
 	public Servicio() {
 	}
 
 	public Servicio(Long id, String nombre, Double costo, Date fechaAlta, Date fechaBaja, String estado
-			/*List<Categoria> categorias*/) {
+	/* List<Categoria> categorias */) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -60,7 +61,7 @@ public class Servicio implements Serializable {
 		this.fechaAlta = fechaAlta;
 		this.fechaBaja = fechaBaja;
 		this.estado = estado;
-		//this.categorias = categorias;
+		// this.categorias = categorias;
 	}
 
 	public Long getId() {
@@ -78,7 +79,6 @@ public class Servicio implements Serializable {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-
 
 	public Double getCosto() {
 		return costo;
@@ -112,14 +112,12 @@ public class Servicio implements Serializable {
 		this.estado = estado;
 	}
 
-
 	@Override
 	public String toString() {
 		return "Servicio [id=" + id + ", nombre=" + nombre + ", costo=" + costo + ", fechaAlta=" + fechaAlta
 				+ ", fechaBaja=" + fechaBaja + ", estado=" + estado + " ]";
 	}
-	
-	
+
 	public List<Archivos> getFoto() {
 		return foto;
 	}
@@ -135,7 +133,6 @@ public class Servicio implements Serializable {
 	public void setCategorias(List<Categoria> categorias) {
 		this.categorias = categorias;
 	}
-
 
 	private static final long serialVersionUID = 1L;
 }
