@@ -2,6 +2,7 @@ package com.proyecto.integrador.hotel.libertador.controllers;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -30,8 +31,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.proyecto.integrador.hotel.libertador.models.entity.Archivos;
 import com.proyecto.integrador.hotel.libertador.models.entity.Servicio;
 import com.proyecto.integrador.hotel.libertador.models.entity.Usuario;
+import com.proyecto.integrador.hotel.libertador.models.service.IArchivosService;
 import com.proyecto.integrador.hotel.libertador.models.service.IServicioService;
 import com.proyecto.integrador.hotel.libertador.models.service.IUploadFileService;
 
@@ -47,6 +50,9 @@ public class ServicioRestController {
 	
 	@Autowired
 	private IUploadFileService uploadService;
+	
+	@Autowired
+	private IArchivosService archivoService;
 	
 	private final Logger log=LoggerFactory.getLogger(ServicioRestController.class);
 	
@@ -153,9 +159,13 @@ public class ServicioRestController {
 		
 		try {
 			Servicio servicio=servicioService.findById(id);
-			String nombreFotoAnterior=servicio.getFoto();
-			
-			uploadService.eliminar(nombreFotoAnterior);
+			List<Archivos> archivos=servicio.getFoto();
+			for(Archivos archivo: archivos) {
+				String nombreFotoAnterior=archivo.getNombre();
+				uploadService.eliminar(nombreFotoAnterior);
+				archivoService.delete(archivo.getId());
+				
+			}
 			servicioService.delete(id);
 		} catch (DataAccessException e) {
 			response.put("mensaje", "Error al elimnar el servicio en la base de datos");
@@ -167,33 +177,6 @@ public class ServicioRestController {
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 	}
 	
-	@PostMapping("servicios/upload")
-	public ResponseEntity<?> upload(@RequestParam("archivo") MultipartFile archivo, @RequestParam("id") Long id){
-		Map<String, Object> response = new HashMap();
-		
-		Servicio servicio=servicioService.findById(id);
-		
-		if(!archivo.isEmpty()) {
-			String nombreArchivo=null;
-			try {
-				nombreArchivo=uploadService.copiar(archivo);
-			} catch (IOException e) {
-				response.put("mensaje", "Error al subir la imagen");
-				response.put("error", e.getMessage().concat(":").concat(e.getCause().getMessage()));
-				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-			
-			String nombreFotoAnterior=servicio.getFoto();
-			
-			uploadService.eliminar(nombreFotoAnterior);
-			
-			servicio.setFoto(nombreArchivo);
-			servicioService.save(servicio);
-			response.put("servicio", servicio);
-			response.put("mensaje", "Se ha subido correctamente la imagen"+nombreArchivo);
-		}
-		return new ResponseEntity<Map<String,Object>>(response ,HttpStatus.CREATED);	
-	}
 	
 	@Transactional
     @PutMapping("/servicios/{id}/estado")

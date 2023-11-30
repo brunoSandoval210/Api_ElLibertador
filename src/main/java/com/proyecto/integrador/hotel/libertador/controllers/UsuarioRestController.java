@@ -32,7 +32,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.proyecto.integrador.hotel.libertador.models.entity.Archivos;
 import com.proyecto.integrador.hotel.libertador.models.entity.Usuario;
+import com.proyecto.integrador.hotel.libertador.models.service.IArchivosService;
 import com.proyecto.integrador.hotel.libertador.models.service.IUploadFileService;
 import com.proyecto.integrador.hotel.libertador.models.service.IUsuarioService;
 
@@ -49,6 +51,9 @@ public class UsuarioRestController {
 	
 	@Autowired
 	private IUploadFileService uploadService;
+	
+	@Autowired
+	private IArchivosService archivoService;
 	
 	private final Logger log=LoggerFactory.getLogger(UsuarioRestController.class);
 
@@ -166,9 +171,12 @@ public class UsuarioRestController {
 		
 		try {
 			Usuario usuario=usuarioService.findById(id);
-			String nombreFotoAnterior=usuario.getFoto();
-			
-			uploadService.eliminar(nombreFotoAnterior);
+			List<Archivos> archivos = usuario.getFoto();
+			 for (Archivos archivo : archivos) {
+			        String nombreFotoAnterior = archivo.getNombre();
+			        uploadService.eliminar(nombreFotoAnterior);
+			        archivoService.delete(archivo.getId());
+			    }
 			usuarioService.delete(id);
 		} catch (DataAccessException e) {
 			response.put("mensaje", "Error al elimnar el usuario en la base de datos");
@@ -180,7 +188,7 @@ public class UsuarioRestController {
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 	}
 	
-	@PostMapping("usuarios/upload")
+	/*@PostMapping("usuarios/upload")
 	public ResponseEntity<?> upload(@RequestParam("archivo") MultipartFile archivo, @RequestParam("id") Long id){
 		Map<String, Object> response = new HashMap();
 		
@@ -207,7 +215,7 @@ public class UsuarioRestController {
 		}
 		return new ResponseEntity<Map<String,Object>>(response ,HttpStatus.CREATED);	
 	}
-	
+	*/
 	@GetMapping("upload/img/{nombreFoto:.+}")
 	public ResponseEntity<Resource> verFoto(@PathVariable String nombreFoto){
 

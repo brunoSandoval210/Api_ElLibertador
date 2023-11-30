@@ -1,4 +1,5 @@
 package com.proyecto.integrador.hotel.libertador.models.entity;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Iterator;
@@ -22,57 +23,55 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
 @Entity
-public class Categoria implements Serializable{
-	
+public class Categoria implements Serializable {
+
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	@Column(nullable = false, unique = true)
-    private String nombre;
-    private int cantPersonas;
-    @Temporal(TemporalType.DATE)
-    private Date fechaAlta;
-    @PrePersist
-    public void prePersist() {
-    	fechaAlta=new Date();
-    }
-    @Temporal(TemporalType.DATE)
-    private Date fechaBaja;
-    @Column(nullable = false)
-    private String estado;
-    private String foto;
+	private String nombre;
+	private int cantPersonas;
+	@Temporal(TemporalType.DATE)
+	private Date fechaAlta;
+
+	@PrePersist
+	public void prePersist() {
+		fechaAlta = new Date();
+	}
+
+	@Temporal(TemporalType.DATE)
+	private Date fechaBaja;
+	@Column(nullable = false)
+	private String estado;
+	@OneToMany(mappedBy = "categoria")
+	private List<Archivos> foto;
 	private String descripcion_breve;
 
 	@Column(columnDefinition = "TEXT")
 	private String descripcion_larga;
 	private double precioCategoria;
-    
-    @JsonIgnoreProperties({"categorias", "hibernateLazyInitializer", "handler"})
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(
-        name = "servicio_categoria",
-        joinColumns = @JoinColumn(name = "id_categoria"),
-        inverseJoinColumns = @JoinColumn(name = "id_servicio")
-    )
-    private List<Servicio> servicios;
-    /*
-    @JsonIgnoreProperties({"tipoSalon", "hibernateLazyInitializer", "handler"})
-    @OneToMany(mappedBy = "tipoSalon", fetch = FetchType.LAZY)
-    private List<Salon> salones;*/
 
-    @JsonIgnoreProperties({"tipoHabitacion", "hibernateLazyInitializer", "handler"})
-    @OneToMany(mappedBy = "tipoHabitacion", fetch = FetchType.LAZY)
-    private List<Habitacion> habitaciones;
-    
-    
+	@JsonIgnoreProperties({ "categorias", "hibernateLazyInitializer", "handler" })
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinTable(name = "servicio_categoria", joinColumns = @JoinColumn(name = "id_categoria"), inverseJoinColumns = @JoinColumn(name = "id_servicio"))
+	private List<Servicio> servicios;
+	/*
+	 * @JsonIgnoreProperties({"tipoSalon", "hibernateLazyInitializer", "handler"})
+	 * 
+	 * @OneToMany(mappedBy = "tipoSalon", fetch = FetchType.LAZY) private
+	 * List<Salon> salones;
+	 */
+
+	@JsonIgnoreProperties({ "tipoHabitacion", "hibernateLazyInitializer", "handler" })
+	@OneToMany(mappedBy = "tipoHabitacion", fetch = FetchType.LAZY)
+	private List<Habitacion> habitaciones;
 
 	public Categoria() {
 	}
 
-
-	public Categoria(Long id, String nombre, int cantPersonas, Date fechaAlta, Date fechaBaja,
-			String estado, String foto, List<Servicio> servicios,/* List<Salon> salones,*/ List<Habitacion> habitaciones,
-					 String descripcion_breve, String descripcion_larga, double precioCategoria) {
+	public Categoria(Long id, String nombre, int cantPersonas, Date fechaAlta, Date fechaBaja, String estado,
+			List<Archivos> foto, String descripcion_breve, String descripcion_larga, double precioCategoria,
+			List<Servicio> servicios, List<Habitacion> habitaciones) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -81,13 +80,12 @@ public class Categoria implements Serializable{
 		this.fechaBaja = fechaBaja;
 		this.estado = estado;
 		this.foto = foto;
-		this.servicios = servicios;
 		this.descripcion_breve = descripcion_breve;
 		this.descripcion_larga = descripcion_larga;
 		this.precioCategoria = precioCategoria;
+		this.servicios = servicios;
+		this.habitaciones = habitaciones;
 	}
-
-
 
 	public Long getId() {
 		return id;
@@ -104,7 +102,6 @@ public class Categoria implements Serializable{
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-
 
 	public int getCantPersonas() {
 		return cantPersonas;
@@ -138,11 +135,11 @@ public class Categoria implements Serializable{
 		this.estado = estado;
 	}
 
-	public String getFoto() {
+	public List<Archivos> getFoto() {
 		return foto;
 	}
 
-	public void setFoto(String foto) {
+	public void setFoto(List<Archivos> foto) {
 		this.foto = foto;
 	}
 
@@ -178,64 +175,49 @@ public class Categoria implements Serializable{
 		this.precioCategoria = precioCategoria;
 	}
 
-	/*public List<Salon> getSalones() {
-		return salones;
-	}
-
-	public void setSalones(List<Salon> salones) {
-		this.salones = salones;
-	}
-
-	public List<Habitacion> getHabitaciones() {
-		return habitaciones;
-	}
-
-	public void setHabitaciones(List<Habitacion> habitaciones) {
-		this.habitaciones = habitaciones;
-	}*/
-	
-	
+	/*
+	 * public List<Salon> getSalones() { return salones; }
+	 * 
+	 * public void setSalones(List<Salon> salones) { this.salones = salones; }
+	 * 
+	 * public List<Habitacion> getHabitaciones() { return habitaciones; }
+	 * 
+	 * public void setHabitaciones(List<Habitacion> habitaciones) {
+	 * this.habitaciones = habitaciones; }
+	 */
 
 	public Double getCostoServicios() {
-	    double total = 0.0;
-	    List<Servicio> listaservicios = getServicios();
-	    if (listaservicios != null) {
-	        for (Servicio servi : listaservicios) {
-	            total = total + servi.getCosto();
-	        }
-	    } else {
-	    	total=0.0;
-	    }
-	    return total;
-	}
-	public Double getCostoTotalCategoria() {
-		return getCostoServicios()+getPrecioCategoria();
+		double total = 0.0;
+		List<Servicio> listaservicios = getServicios();
+		if (listaservicios != null) {
+			for (Servicio servi : listaservicios) {
+				total = total + servi.getCosto();
+			}
+		} else {
+			total = 0.0;
+		}
+		return total;
 	}
 
-	
+	public Double getCostoTotalCategoria() {
+		return getCostoServicios() + getPrecioCategoria();
+	}
 
 	public List<Habitacion> getHabitaciones() {
 		return habitaciones;
 	}
 
-
 	public void setHabitaciones(List<Habitacion> habitaciones) {
 		this.habitaciones = habitaciones;
 	}
 
-
-	
-
-
 	@Override
-    public String toString() {
-        return "Categoria [id=" + id + ", nombre=" + nombre + ", cantPersonas="
-                + cantPersonas + ", fechaAlta=" + fechaAlta + ", fechaBaja=" + fechaBaja + ", estado=" + estado
-                + ", foto=" + foto + ", servicios=" + servicios + ", habitaciones="
-                + habitaciones + "]";
-    }
-	
+	public String toString() {
+		return "Categoria [id=" + id + ", nombre=" + nombre + ", cantPersonas=" + cantPersonas + ", fechaAlta="
+				+ fechaAlta + ", fechaBaja=" + fechaBaja + ", estado=" + estado + ", foto=" + foto + ", servicios="
+				+ servicios + ", habitaciones=" + habitaciones + "]";
+	}
+
 	private static final long serialVersionUID = 1L;
-    
 
 }

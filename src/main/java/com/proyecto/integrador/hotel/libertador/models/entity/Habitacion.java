@@ -23,49 +23,50 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-public class Habitacion implements Serializable{
-	
+public class Habitacion implements Serializable {
+
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-	
-	//@NotEmpty(message = "El nombre de la habitacion no puede estar vacio")
-    private String nombre;
-	
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	// @NotEmpty(message = "El nombre de la habitacion no puede estar vacio")
+	private String nombre;
+
 	@NotNull(message = "El número de habitación no puede ser nulo")
 	@Column(name = "num_habitacion")
-    private int numHabitacion;
-	
-	@NotNull(message = "El costo de la habitacion no puede estar vacio")
-    private Double costohabitacion;
-    
-    private int maxPersonas;
-    
-    @NotNull(message = "La fecha de alta no puede ser nullo")
-    @Temporal(TemporalType.DATE)
-    private Date fechaAlta;
-    
-    @Temporal(TemporalType.DATE)
-    private Date fechaBaja;
-    
-    private String ocupante;
-    
-    @Column(nullable = false)
-    private String estado;
-    
-    private String disponibilidad;
-    
-    private String foto;
+	private int numHabitacion;
 
-    @JsonIgnoreProperties({"habitaciones","hibernateLazyInitializer","handler"})
-    @ManyToOne
-    @JoinColumn(name ="Id_categoria_habitacion")
-    @NotNull(message = "El tipo de habitación no puede ser nulo")
-    private Categoria tipoHabitacion; 
-    
-    @OneToMany(mappedBy = "habitaciones", cascade = CascadeType.ALL)
-    private List<DetalleReserva> detalleReservasHabitaciones;
-    
+	@NotNull(message = "El costo de la habitacion no puede estar vacio")
+	private Double costohabitacion;
+
+	private int maxPersonas;
+
+	@NotNull(message = "La fecha de alta no puede ser nullo")
+	@Temporal(TemporalType.DATE)
+	private Date fechaAlta;
+
+	@Temporal(TemporalType.DATE)
+	private Date fechaBaja;
+
+	private String ocupante;
+
+	@Column(nullable = false)
+	private String estado;
+
+	private String disponibilidad;
+
+	@OneToMany(mappedBy = "habitacion")
+	private List<Archivos> foto;
+
+	@JsonIgnoreProperties({ "habitaciones", "hibernateLazyInitializer", "handler" })
+	@ManyToOne
+	@JoinColumn(name = "Id_categoria_habitacion")
+	@NotNull(message = "El tipo de habitación no puede ser nulo")
+	private Categoria tipoHabitacion;
+
+	@OneToMany(mappedBy = "habitaciones", cascade = CascadeType.ALL)
+	private List<DetalleReserva> detalleReservasHabitaciones;
+
 	public Habitacion() {
 	}
 
@@ -84,23 +85,21 @@ public class Habitacion implements Serializable{
 		this.disponibilidad = disponibilidad;
 		this.nombre = nombre;
 	}
-	
+
 	public List<Date> getFechasReservadas() {
-        List<Date> fechasReservadas = new ArrayList<>();
-        if (detalleReservasHabitaciones != null) {
-            for (DetalleReserva detalleReserva : detalleReservasHabitaciones) {
-                fechasReservadas.add(detalleReserva.getCheckIn());
-                fechasReservadas.add(detalleReserva.getChackOut());
-            }
-        }
-        return fechasReservadas;
-    }
-	
-	
-	
+		List<Date> fechasReservadas = new ArrayList<>();
+		if (detalleReservasHabitaciones != null) {
+			for (DetalleReserva detalleReserva : detalleReservasHabitaciones) {
+				fechasReservadas.add(detalleReserva.getCheckIn());
+				fechasReservadas.add(detalleReserva.getChackOut());
+			}
+		}
+		return fechasReservadas;
+	}
+
 	public Double getCostoServicios() {
-		Categoria tipo=getTipoHabitacion();
-		double precioServicios=tipo.getCostoServicios();	
+		Categoria tipo = getTipoHabitacion();
+		double precioServicios = tipo.getCostoServicios();
 		return precioServicios;
 	}
 
@@ -171,56 +170,52 @@ public class Habitacion implements Serializable{
 	public String getEstado() {
 		return estado;
 	}
-	
-	
+
 	public void setDisponibilidad(String disponibilidad) {
 		this.disponibilidad = disponibilidad;
 	}
 
-
-
-	
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
 
 	public String getDisponibilidad() {
-	    List<Date> fechasReservadas = getFechasReservadas();
+		List<Date> fechasReservadas = getFechasReservadas();
 
-	    if (fechasReservadas.isEmpty()) {
-	        // Si no hay fechas reservadas, la habitación está disponible
-	        return "disponible";
-	    } else {
-	        Date fechaActual = new Date();
+		if (fechasReservadas.isEmpty()) {
+			// Si no hay fechas reservadas, la habitación está disponible
+			return "disponible";
+		} else {
+			Date fechaActual = new Date();
 
-	        for (int i = 0; i < fechasReservadas.size(); i += 2) {
-	            Date checkIn = fechasReservadas.get(i);
-	            Date checkOut = fechasReservadas.get(i + 1);
+			for (int i = 0; i < fechasReservadas.size(); i += 2) {
+				Date checkIn = fechasReservadas.get(i);
+				Date checkOut = fechasReservadas.get(i + 1);
 
-	            if (!fechaActual.before(checkIn) && fechaActual.before(checkOut)) {
-	                // La fecha actual está después del check-in y antes del check-out, la habitación está reservada
-	                return "reservado hasta " + formatearFecha(checkOut);
-	            }
-	        }
+				if (!fechaActual.before(checkIn) && fechaActual.before(checkOut)) {
+					// La fecha actual está después del check-in y antes del check-out, la
+					// habitación está reservada
+					return "reservado hasta " + formatearFecha(checkOut);
+				}
+			}
 
-	        // Si no está dentro de ningún período de reserva, la habitación está disponible
-	        return "disponible";
-	    }
+			// Si no está dentro de ningún período de reserva, la habitación está disponible
+			return "disponible";
+		}
 	}
 
 	private String formatearFecha(Date fecha) {
-	    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM");
-	    return sdf.format(fecha);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM");
+		return sdf.format(fecha);
 	}
 
-
-	public String getFoto() {
+	public List<Archivos> getFoto() {
 		return foto;
 	}
 
-	public void setFoto(String foto) {
+	public void setFoto(List<Archivos> foto) {
 		this.foto = foto;
-	}	
+	}
 
 	public String getNombre() {
 		return nombre;
@@ -237,12 +232,11 @@ public class Habitacion implements Serializable{
 				+ ", fechaBaja=" + fechaBaja + ", ocupante=" + ocupante + ", estado=" + estado + ", disponibilidad="
 				+ disponibilidad + ", foto=" + foto + "]";
 	}
-	
+
 	public Double getCostoTotalHabitacion() {
-		double total=getCostoServicios()+getCostohabitacion();
+		double total = getCostoServicios() + getCostohabitacion();
 		return total;
 	}
-	
-	
+
 	private static final long serialVersionUID = 1L;
 }
