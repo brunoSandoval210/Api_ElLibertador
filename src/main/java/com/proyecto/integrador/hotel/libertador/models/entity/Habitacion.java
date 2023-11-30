@@ -55,7 +55,8 @@ public class Habitacion implements Serializable{
     
     private String disponibilidad;
     
-    private String foto;
+    @OneToMany(mappedBy = "habitacion")
+    private List<Archivos>  foto;
 
     @JsonIgnoreProperties({"habitaciones","hibernateLazyInitializer","handler"})
     @ManyToOne
@@ -214,13 +215,13 @@ public class Habitacion implements Serializable{
 	}
 
 
-	public String getFoto() {
+	public List<Archivos> getFoto() {
 		return foto;
 	}
 
-	public void setFoto(String foto) {
+	public void setFoto(List<Archivos> foto) {
 		this.foto = foto;
-	}	
+	}
 
 	public String getNombre() {
 		return nombre;

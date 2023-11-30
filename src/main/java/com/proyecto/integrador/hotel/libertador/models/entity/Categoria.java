@@ -40,7 +40,9 @@ public class Categoria implements Serializable{
     private Date fechaBaja;
     @Column(nullable = false)
     private String estado;
-    private String foto;
+    
+    @OneToMany(mappedBy = "categoria")
+    private List<Archivos>  foto;
 	private String descripcion_breve;
 
 	@Column(columnDefinition = "TEXT")
@@ -69,10 +71,9 @@ public class Categoria implements Serializable{
 	public Categoria() {
 	}
 
-
-	public Categoria(Long id, String nombre, int cantPersonas, Date fechaAlta, Date fechaBaja,
-			String estado, String foto, List<Servicio> servicios,/* List<Salon> salones,*/ List<Habitacion> habitaciones,
-					 String descripcion_breve, String descripcion_larga, double precioCategoria) {
+	public Categoria(Long id, String nombre, int cantPersonas, Date fechaAlta, Date fechaBaja, String estado,
+			List<Archivos> foto, String descripcion_breve, String descripcion_larga, double precioCategoria,
+			List<Servicio> servicios, List<Habitacion> habitaciones) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -81,11 +82,15 @@ public class Categoria implements Serializable{
 		this.fechaBaja = fechaBaja;
 		this.estado = estado;
 		this.foto = foto;
-		this.servicios = servicios;
 		this.descripcion_breve = descripcion_breve;
 		this.descripcion_larga = descripcion_larga;
 		this.precioCategoria = precioCategoria;
+		this.servicios = servicios;
+		this.habitaciones = habitaciones;
 	}
+
+
+
 
 
 
@@ -138,11 +143,12 @@ public class Categoria implements Serializable{
 		this.estado = estado;
 	}
 
-	public String getFoto() {
+
+	public List<Archivos> getFoto() {
 		return foto;
 	}
 
-	public void setFoto(String foto) {
+	public void setFoto(List<Archivos> foto) {
 		this.foto = foto;
 	}
 

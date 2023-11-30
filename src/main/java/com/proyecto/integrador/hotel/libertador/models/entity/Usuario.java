@@ -67,7 +67,8 @@ public class Usuario implements Serializable {
 	@OneToMany(mappedBy = "usuario",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Reserva> reservas;
 	
-	private String foto;
+	@OneToMany(mappedBy = "usuario")
+	private List<Archivos> foto;
 
 	public Usuario() {
 		this.reservas=new ArrayList<>();
@@ -189,11 +190,12 @@ public class Usuario implements Serializable {
 		this.reservas = reservas;
 	}
 
-	public String getFoto() {
+
+	public List<Archivos> getFoto() {
 		return foto;
 	}
 
-	public void setFoto(String foto) {
+	public void setFoto(List<Archivos> foto) {
 		this.foto = foto;
 	}
 

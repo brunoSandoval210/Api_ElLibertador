@@ -13,6 +13,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
@@ -45,7 +46,8 @@ public class Servicio implements Serializable {
 	@ManyToMany(mappedBy = "servicios", fetch = FetchType.LAZY)
 	private List<Categoria> categorias;
 	
-	private String foto;
+	@OneToMany(mappedBy = "servicio")
+	private List<Archivos> foto;
 	public Servicio() {
 	}
 
@@ -116,16 +118,16 @@ public class Servicio implements Serializable {
 		return "Servicio [id=" + id + ", nombre=" + nombre + ", costo=" + costo + ", fechaAlta=" + fechaAlta
 				+ ", fechaBaja=" + fechaBaja + ", estado=" + estado + " ]";
 	}
-
-	public String getFoto() {
+	
+	
+	public List<Archivos> getFoto() {
 		return foto;
 	}
 
-	public void setFoto(String foto) {
+	public void setFoto(List<Archivos> foto) {
 		this.foto = foto;
 	}
-	
-	
+
 	public List<Categoria> getCategorias() {
 		return categorias;
 	}

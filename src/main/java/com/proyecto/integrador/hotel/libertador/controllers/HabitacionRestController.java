@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.proyecto.integrador.hotel.libertador.models.entity.Archivos;
 import com.proyecto.integrador.hotel.libertador.models.entity.Habitacion;
 import com.proyecto.integrador.hotel.libertador.models.service.IHabitacionService;
 import com.proyecto.integrador.hotel.libertador.models.service.IUploadFileService;
@@ -156,9 +157,13 @@ public class HabitacionRestController {
 		
 		try {
 			Habitacion habitacion=habitacionService.findById(id);
-			String nombreFotoAnterior=habitacion.getFoto();
+			List<Archivos> fotos = habitacion.getFoto();
 			
-			uploadService.eliminar(nombreFotoAnterior);
+			if (fotos != null && !fotos.isEmpty()) {
+	            for (Archivos foto : fotos) {
+	                uploadService.eliminar(foto.getNombre());
+	            }
+	        }
 			habitacionService.delete(id);
 		} catch (DataAccessException e) {
 			response.put("mensaje", "Error al elimnar la habitacion en la base de datos");
@@ -170,33 +175,7 @@ public class HabitacionRestController {
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 	}
 	
-	@PostMapping("habitaciones/upload")
-	public ResponseEntity<?> upload(@RequestParam("archivo") MultipartFile archivo, @RequestParam("id") Long id){
-		Map<String, Object> response = new HashMap();
-		
-		Habitacion habitacion=habitacionService.findById(id);
-		
-		if(!archivo.isEmpty()) {
-			String nombreArchivo=null;
-			try {
-				nombreArchivo=uploadService.copiar(archivo);
-			} catch (IOException e) {
-				response.put("mensaje", "Error al subir la imagen");
-				response.put("error", e.getMessage().concat(":").concat(e.getCause().getMessage()));
-				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-			
-			String nombreFotoAnterior=habitacion.getFoto();
-			
-			uploadService.eliminar(nombreFotoAnterior);
-			
-			habitacion.setFoto(nombreArchivo);
-			habitacionService.save(habitacion);
-			response.put("habitacion", habitacion);
-			response.put("mensaje", "Se ha subido correctamente la imagen"+nombreArchivo);
-		}
-		return new ResponseEntity<Map<String,Object>>(response ,HttpStatus.CREATED);	
-	}
+	
 	@Transactional
     @PutMapping("/habitaciones/{id}/estado")
     public ResponseEntity<String> cambiarEstadoHabitacion(@PathVariable long id) {
