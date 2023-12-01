@@ -7,10 +7,12 @@ import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -55,7 +57,8 @@ public class Habitacion implements Serializable {
 
 	private String disponibilidad;
 
-	@OneToMany(mappedBy = "habitacion")
+	@JsonIgnoreProperties(value = { "habitacion", "hibernateLazyInitializer", "handler" }, allowGetters = true)
+	@OneToMany(mappedBy = "habitacion", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Archivos> foto;
 
 	@JsonIgnoreProperties({ "habitaciones", "hibernateLazyInitializer", "handler" })
