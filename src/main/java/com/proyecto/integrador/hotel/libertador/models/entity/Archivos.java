@@ -2,7 +2,12 @@ package com.proyecto.integrador.hotel.libertador.models.entity;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,19 +23,23 @@ public class Archivos implements Serializable{
 	
 	private String nombre;
 	
-	@ManyToOne
+	@JsonIgnoreProperties(value={"foto","hibernateLazyInitializer","handler"}, allowSetters = true)
+	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    @ManyToOne
+	@JsonIgnoreProperties(value={"foto","hibernateLazyInitializer","handler"}, allowSetters = true)
+	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "servicio_id")
     private Servicio servicio;
 
-    @ManyToOne
+	@JsonIgnoreProperties(value={"foto","hibernateLazyInitializer","handler"}, allowSetters = true)
+	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "categoria_id")
     private Categoria categoria;
-
-    @ManyToOne
+    
+	@JsonIgnoreProperties(value={"foto","hibernateLazyInitializer","handler"}, allowSetters = true)
+	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "habitacion_id")
     private Habitacion habitacion;    
     

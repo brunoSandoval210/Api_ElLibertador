@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -43,7 +44,9 @@ public class Categoria implements Serializable {
 	private Date fechaBaja;
 	@Column(nullable = false)
 	private String estado;
-	@OneToMany(mappedBy = "categoria")
+	
+	@JsonIgnoreProperties(value = { "categoria", "hibernateLazyInitializer", "handler" }, allowGetters = true)
+	@OneToMany(mappedBy = "categoria", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Archivos> foto;
 	private String descripcion_breve;
 

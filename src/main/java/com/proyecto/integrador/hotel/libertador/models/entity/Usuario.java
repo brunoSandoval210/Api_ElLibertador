@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -67,7 +68,8 @@ public class Usuario implements Serializable {
 	@OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Reserva> reservas;
 
-	@OneToMany(mappedBy = "usuario")
+	@JsonIgnoreProperties(value = { "usuario", "hibernateLazyInitializer", "handler" }, allowGetters = true)
+	@OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Archivos> foto;
 
 	public Usuario() {
