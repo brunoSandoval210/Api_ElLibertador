@@ -107,7 +107,21 @@ INSERT INTO `detalle_reserva` ( `chack_out`, `check_in`, `id_habitacion`, `reser
 INSERT INTO `detalle_reserva` ( `chack_out`, `check_in`, `id_habitacion`, `reserva_id`) VALUES( '2023-12-22', '2023-12-21', 11, 11);
 INSERT INTO `detalle_reserva` ( `chack_out`, `check_in`, `id_habitacion`, `reserva_id`) VALUES( '2023-11-30', '2023-11-23', 12, 12);
 
-
+INSERT INTO `archivos` ( `categoria_id`, `nombre`) VALUES(1, "suite-imperial-1.png");
+INSERT INTO `archivos` ( `categoria_id`, `nombre`) VALUES(1, "suite-imperial-2.png");
+INSERT INTO `archivos` ( `categoria_id`, `nombre`) VALUES(1, "suite-imperial-3.png");
+INSERT INTO `archivos` ( `categoria_id`, `nombre`) VALUES(2, "suite-clasica-1.png");
+INSERT INTO `archivos` ( `categoria_id`, `nombre`) VALUES(2, "suite-clasica-2.png");
+INSERT INTO `archivos` ( `categoria_id`, `nombre`) VALUES(3, "habitacion-retro-1.png");
+INSERT INTO `archivos` ( `categoria_id`, `nombre`) VALUES(3, "habitacion-retro-2.png");
+INSERT INTO `archivos` ( `categoria_id`, `nombre`) VALUES(4, "loft-relojero-1.png");
+INSERT INTO `archivos` ( `categoria_id`, `nombre`) VALUES(4, "loft-relojero-2.png");
+INSERT INTO `archivos` ( `categoria_id`, `nombre`) VALUES(5, "vista-al-ayer-1.png");
+INSERT INTO `archivos` ( `categoria_id`, `nombre`) VALUES(5, "vista-al-ayer-2.png");
+INSERT INTO `archivos` ( `categoria_id`, `nombre`) VALUES(5, "vista-al-ayer-3.png");
+INSERT INTO `archivos` ( `categoria_id`, `nombre`) VALUES(6, "atico-1.png");
+INSERT INTO `archivos` ( `categoria_id`, `nombre`) VALUES(6, "atico-2.png");
+INSERT INTO `archivos` ( `categoria_id`, `nombre`) VALUES(6, "atico-3.png");
 
 
 
