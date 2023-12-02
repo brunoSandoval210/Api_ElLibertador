@@ -35,6 +35,7 @@ import com.proyecto.integrador.hotel.libertador.models.entity.Archivos;
 import com.proyecto.integrador.hotel.libertador.models.entity.Habitacion;
 import com.proyecto.integrador.hotel.libertador.models.service.IArchivosService;
 import com.proyecto.integrador.hotel.libertador.models.service.IHabitacionService;
+import com.proyecto.integrador.hotel.libertador.models.service.IS3Service;
 import com.proyecto.integrador.hotel.libertador.models.service.IUploadFileService;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -48,7 +49,7 @@ public class HabitacionRestController {
 	private IHabitacionService habitacionService;
 	
 	@Autowired
-	private IUploadFileService uploadService;
+	private IS3Service S3Service;
 	
 	@Autowired
 	private IArchivosService archivoService;
@@ -116,7 +117,7 @@ public class HabitacionRestController {
 	}
 	
 	@DeleteMapping("/habitaciones/{id}")
-	public ResponseEntity<?> delete(@PathVariable Long id) {
+	public ResponseEntity<?> delete(@PathVariable Long id) throws IOException {
 		
 		Map<String, Object> response = new HashMap();
 		
@@ -125,7 +126,7 @@ public class HabitacionRestController {
 			List<Archivos> archivos = habitacion.getFoto();
 			 for (Archivos archivo : archivos) {
 			        String nombreFotoAnterior = archivo.getNombre();
-			        uploadService.eliminar(nombreFotoAnterior);
+			        S3Service.deleteFile(nombreFotoAnterior);
 			        archivoService.delete(archivo.getId());
 			    }
 			habitacionService.delete(id);
@@ -139,33 +140,6 @@ public class HabitacionRestController {
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 	}
 	
-	@PostMapping("habitaciones/upload")
-	public ResponseEntity<?> upload(@RequestParam("archivo") MultipartFile archivo, @RequestParam("id") Long id){
-		Map<String, Object> response = new HashMap();
-		
-		Habitacion habitacion=habitacionService.findById(id);
-		
-		if(!archivo.isEmpty()) {
-			String nombreArchivo=null;
-			try {
-				nombreArchivo=uploadService.copiar(archivo);
-			} catch (IOException e) {
-				response.put("mensaje", "Error al subir la imagen");
-				response.put("error", e.getMessage().concat(":").concat(e.getCause().getMessage()));
-				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-			
-			//String nombreFotoAnterior=habitacion.getFoto();
-			
-			//uploadService.eliminar(nombreFotoAnterior);
-			
-			//habitacion.setFoto(nombreArchivo);
-			habitacionService.save(habitacion);
-			response.put("habitacion", habitacion);
-			response.put("mensaje", "Se ha subido correctamente la imagen"+nombreArchivo);
-		}
-		return new ResponseEntity<Map<String,Object>>(response ,HttpStatus.CREATED);	
-	}
 	@Transactional
     @PutMapping("/habitaciones/{id}/estado")
     public ResponseEntity<String> cambiarEstadoHabitacion(@PathVariable long id) {

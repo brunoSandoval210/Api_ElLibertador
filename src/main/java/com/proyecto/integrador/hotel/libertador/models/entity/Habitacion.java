@@ -3,6 +3,7 @@ package com.proyecto.integrador.hotel.libertador.models.entity;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -57,7 +58,7 @@ public class Habitacion implements Serializable {
 
 	private String disponibilidad;
 
-	@JsonIgnoreProperties(value = { "habitacion", "hibernateLazyInitializer", "handler" }, allowGetters = true)
+	@JsonManagedReference
 	@OneToMany(mappedBy = "habitacion", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Archivos> foto;
 
@@ -88,16 +89,36 @@ public class Habitacion implements Serializable {
 		this.disponibilidad = disponibilidad;
 		this.nombre = nombre;
 	}
+	
 
-	public List<Date> getFechasReservadas() {
-		List<Date> fechasReservadas = new ArrayList<>();
-		if (detalleReservasHabitaciones != null) {
-			for (DetalleReserva detalleReserva : detalleReservasHabitaciones) {
-				fechasReservadas.add(detalleReserva.getCheckIn());
-				fechasReservadas.add(detalleReserva.getChackOut());
-			}
-		}
-		return fechasReservadas;
+	public List<Date> FechasReservadas() {
+	    List<Date> fechasReservadas = new ArrayList<>();
+	    if (detalleReservasHabitaciones != null) {
+	        for (DetalleReserva detalleReserva : detalleReservasHabitaciones) {
+	            Date checkIn = detalleReserva.getCheckIn();
+	            Date checkOut = detalleReserva.getChackOut();
+	            Calendar calendar = Calendar.getInstance();
+	            calendar.setTime(checkIn);
+	            while (!calendar.getTime().after(checkOut)) {
+	                fechasReservadas.add(calendar.getTime());
+	                calendar.add(Calendar.DATE, 1);
+	            }
+	        }
+	    }
+	    return fechasReservadas;
+	}
+	private String formatearFecha(Date fecha) {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-YY");
+		return sdf.format(fecha);
+	}
+	
+	public List<String> getFechasReservadas() {
+	    List<Date> fechasReservadas = FechasReservadas();
+	    List<String> fechasReservadasFormateadas = new ArrayList<>();
+	    for (Date fecha : fechasReservadas) {
+	        fechasReservadasFormateadas.add(formatearFecha(fecha));
+	    }
+	    return fechasReservadasFormateadas;
 	}
 
 	public Double getCostoServicios() {
@@ -183,11 +204,11 @@ public class Habitacion implements Serializable {
 	}
 
 	public String getDisponibilidad() {
-		List<Date> fechasReservadas = getFechasReservadas();
+		List<Date> fechasReservadas = FechasReservadas();
 
 		if (fechasReservadas.isEmpty()) {
 			// Si no hay fechas reservadas, la habitación está disponible
-			return "disponible";
+			return "Disponible";
 		} else {
 			Date fechaActual = new Date();
 
@@ -198,19 +219,15 @@ public class Habitacion implements Serializable {
 				if (!fechaActual.before(checkIn) && fechaActual.before(checkOut)) {
 					// La fecha actual está después del check-in y antes del check-out, la
 					// habitación está reservada
-					return "reservado hasta " + formatearFecha(checkOut);
+					return "No Disponible";
 				}
 			}
 
 			// Si no está dentro de ningún período de reserva, la habitación está disponible
-			return "disponible";
+			return "Disponible";
 		}
 	}
 
-	private String formatearFecha(Date fecha) {
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM");
-		return sdf.format(fecha);
-	}
 
 	public List<Archivos> getFoto() {
 		return foto;

@@ -45,7 +45,7 @@ public class Categoria implements Serializable {
 	@Column(nullable = false)
 	private String estado;
 	
-	@JsonIgnoreProperties(value = { "categoria", "hibernateLazyInitializer", "handler" }, allowGetters = true)
+	@JsonManagedReference
 	@OneToMany(mappedBy = "categoria", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Archivos> foto;
 	private String descripcion_breve;

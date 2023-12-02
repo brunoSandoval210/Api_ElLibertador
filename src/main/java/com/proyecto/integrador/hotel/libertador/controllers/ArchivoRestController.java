@@ -31,6 +31,7 @@ import com.proyecto.integrador.hotel.libertador.models.entity.Usuario;
 import com.proyecto.integrador.hotel.libertador.models.service.IArchivosService;
 import com.proyecto.integrador.hotel.libertador.models.service.ICategoriaService;
 import com.proyecto.integrador.hotel.libertador.models.service.IHabitacionService;
+import com.proyecto.integrador.hotel.libertador.models.service.IS3Service;
 import com.proyecto.integrador.hotel.libertador.models.service.IServicioService;
 import com.proyecto.integrador.hotel.libertador.models.service.IUploadFileService;
 import com.proyecto.integrador.hotel.libertador.models.service.IUsuarioService;
@@ -58,7 +59,9 @@ public class ArchivoRestController {
 	private IUsuarioService usuarioService;
 
 	@Autowired
-	private IUploadFileService uploadFileService;
+	private IS3Service S3Service;
+	
+	
 
 	@PostMapping("/archivo/subir")
 	public ResponseEntity<?> subirArchivo(@RequestParam("archivo") MultipartFile archivo,
@@ -91,7 +94,7 @@ public class ArchivoRestController {
 			}
 
 			if (!archivo.isEmpty()) {
-				String nombreArchivo = uploadFileService.copiar(archivo);
+				String nombreArchivo = S3Service.uploadFile(archivo);
 				nuevoArchivo.setNombre(nombreArchivo);
 				archivosService.save(nuevoArchivo);
 
@@ -108,26 +111,26 @@ public class ArchivoRestController {
 	}
 
 	@GetMapping("/archivo/descargar/{nombreFoto:.+}")
-	public ResponseEntity<Resource> descarArchivo(@PathVariable String nombreFoto) {
-		Resource recurso = null;
+    public ResponseEntity<?> descarArchivo(@PathVariable String nombreFoto) {
+        String recurso = null;
 
-		try {
-			recurso = uploadFileService.cargar(nombreFoto);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
+        try {
+            recurso = S3Service.downloadFile(nombreFoto);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-		HttpHeaders cabecera = new HttpHeaders();
-		cabecera.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + recurso.getFilename() + "\"");
-		return new ResponseEntity<Resource>(recurso, cabecera, HttpStatus.OK);
-	}
+        HttpHeaders cabecera = new HttpHeaders();
+        cabecera.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + recurso + "\"");
+        return new ResponseEntity<String>(recurso, cabecera, HttpStatus.OK);
+    }
 
 	@DeleteMapping("/archivo/eliminar/{nombreFoto:.+}")
 	public ResponseEntity<?> eliminarArchivo(@PathVariable String nombreFoto) {
 		Map<String, Object> response = new HashMap<>();
 
 		try {
-	        uploadFileService.eliminar(nombreFoto);
+			S3Service.deleteFile(nombreFoto);
 	        Archivos archivo = archivosService.findByNombre(nombreFoto);
 	        if (archivo != null) {
 	            archivosService.delete(archivo.getId());

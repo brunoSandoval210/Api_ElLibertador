@@ -69,10 +69,11 @@ public class HabitacionServiceImpl implements IHabitacionService{
 	@Override
 	@Transactional(readOnly = true)
 	public List<Habitacion> obtenerHabitacionesDisponibles(Date fechaCheckIn, Date fechaCheckOut) {
+		
 	    List<Habitacion> habitaciones = habitacionDao.findAll();
 
 	    habitaciones.removeIf(habitacion ->
-	            habitacion.getFechasReservadas().stream()
+	            habitacion.FechasReservadas().stream()
 	                    .anyMatch(fechaReservada ->
 	                            !(fechaCheckIn.after(fechaReservada) || fechaCheckOut.before(fechaReservada))
 	                    )
