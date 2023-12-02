@@ -27,7 +27,6 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
 
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Entity
 public class Reserva implements Serializable{	
 
@@ -35,8 +34,7 @@ public class Reserva implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
-	@JsonIdentityReference(alwaysAsId = true)
-    @JsonProperty("id_usuario")
+	@JsonIgnoreProperties(value={"reservas","hibernateLazyInitializer","handler"}, allowSetters = true)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;

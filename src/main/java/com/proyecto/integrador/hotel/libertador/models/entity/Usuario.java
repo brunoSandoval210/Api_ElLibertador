@@ -25,7 +25,6 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Entity
 public class Usuario implements Serializable {
 
@@ -68,7 +67,8 @@ public class Usuario implements Serializable {
 	private Date fechaBaja;
 
 	private String estado;
-
+	
+	@JsonIgnoreProperties(value = { "usuario", "hibernateLazyInitializer", "handler" }, allowGetters = true)
 	@OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Reserva> reservas;
 
