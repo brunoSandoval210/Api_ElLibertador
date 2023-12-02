@@ -3,7 +3,13 @@ package com.proyecto.integrador.hotel.libertador.models.entity;
 import java.io.Serializable;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,6 +27,7 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
 
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Entity
 public class Reserva implements Serializable{	
 
@@ -28,12 +35,13 @@ public class Reserva implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
-	@JsonIgnoreProperties(value={"reservas","hibernateLazyInitializer","handler"}, allowSetters = true)
+	@JsonIdentityReference(alwaysAsId = true)
+    @JsonProperty("id_usuario")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
     
-	@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
+	@JsonManagedReference("detalles-reservas")
     @OneToMany(fetch = FetchType.LAZY, cascade =CascadeType.ALL)
     @JoinColumn(name="reserva_id")
     private List<DetalleReserva> detalleReserva;

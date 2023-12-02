@@ -158,7 +158,7 @@ public class CategoriaRestController {
         }
     }
 
-	
+	@Transactional
 	@PutMapping("/categorias/{id}/servicios")
     public ResponseEntity<?> actualizarServiciosDeCategoria(@PathVariable Long id, @RequestBody List<Long> idsServicios) {
         try {
