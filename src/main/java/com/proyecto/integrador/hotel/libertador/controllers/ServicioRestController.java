@@ -35,6 +35,7 @@ import com.proyecto.integrador.hotel.libertador.models.entity.Archivos;
 import com.proyecto.integrador.hotel.libertador.models.entity.Servicio;
 import com.proyecto.integrador.hotel.libertador.models.entity.Usuario;
 import com.proyecto.integrador.hotel.libertador.models.service.IArchivosService;
+import com.proyecto.integrador.hotel.libertador.models.service.IS3Service;
 import com.proyecto.integrador.hotel.libertador.models.service.IServicioService;
 import com.proyecto.integrador.hotel.libertador.models.service.IUploadFileService;
 
@@ -49,7 +50,7 @@ public class ServicioRestController {
 	private IServicioService servicioService;
 	
 	@Autowired
-	private IUploadFileService uploadService;
+	private IS3Service S3Service;
 	
 	@Autowired
 	private IArchivosService archivoService;
@@ -153,7 +154,7 @@ public class ServicioRestController {
 	}
 	
 	@DeleteMapping("/servicios/{id}")
-	public ResponseEntity<?> delete(@PathVariable Long id) {
+	public ResponseEntity<?> delete(@PathVariable Long id) throws IOException {
 		
 		Map<String, Object> response = new HashMap();
 		
@@ -162,7 +163,7 @@ public class ServicioRestController {
 			List<Archivos> archivos=servicio.getFoto();
 			for(Archivos archivo: archivos) {
 				String nombreFotoAnterior=archivo.getNombre();
-				uploadService.eliminar(nombreFotoAnterior);
+				S3Service.deleteFile(nombreFotoAnterior);
 				archivoService.delete(archivo.getId());
 				
 			}

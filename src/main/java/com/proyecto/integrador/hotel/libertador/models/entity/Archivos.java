@@ -23,22 +23,22 @@ public class Archivos implements Serializable{
 	
 	private String nombre;
 	
-	@JsonIgnoreProperties(value={"foto","hibernateLazyInitializer","handler"}, allowSetters = true)
+	@JsonBackReference
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-	@JsonIgnoreProperties(value={"foto","hibernateLazyInitializer","handler"}, allowSetters = true)
+	@JsonBackReference
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "servicio_id")
     private Servicio servicio;
 
-	@JsonIgnoreProperties(value={"foto","hibernateLazyInitializer","handler"}, allowSetters = true)
+	@JsonBackReference
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "categoria_id")
     private Categoria categoria;
     
-	@JsonIgnoreProperties(value={"foto","hibernateLazyInitializer","handler"}, allowSetters = true)
+	@JsonBackReference
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "habitacion_id")
     private Habitacion habitacion;    

@@ -68,7 +68,7 @@ public class Usuario implements Serializable {
 	@OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Reserva> reservas;
 
-	@JsonIgnoreProperties(value = { "usuario", "hibernateLazyInitializer", "handler" }, allowGetters = true)
+	@JsonManagedReference
 	@OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Archivos> foto;
 

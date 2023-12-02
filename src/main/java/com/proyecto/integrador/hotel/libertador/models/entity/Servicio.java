@@ -48,7 +48,7 @@ public class Servicio implements Serializable {
 	@ManyToMany(mappedBy = "servicios", fetch = FetchType.LAZY)
 	private List<Categoria> categorias;
 
-	@JsonIgnoreProperties(value = { "servicio", "hibernateLazyInitializer", "handler" }, allowGetters = true)
+	@JsonManagedReference
 	@OneToMany(mappedBy = "servicio", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Archivos> foto;
 

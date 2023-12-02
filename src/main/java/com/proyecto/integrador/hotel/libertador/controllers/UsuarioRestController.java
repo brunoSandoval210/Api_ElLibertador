@@ -35,6 +35,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.proyecto.integrador.hotel.libertador.models.entity.Archivos;
 import com.proyecto.integrador.hotel.libertador.models.entity.Usuario;
 import com.proyecto.integrador.hotel.libertador.models.service.IArchivosService;
+import com.proyecto.integrador.hotel.libertador.models.service.IS3Service;
 import com.proyecto.integrador.hotel.libertador.models.service.IUploadFileService;
 import com.proyecto.integrador.hotel.libertador.models.service.IUsuarioService;
 
@@ -50,7 +51,7 @@ public class UsuarioRestController {
 	private IUsuarioService usuarioService;
 	
 	@Autowired
-	private IUploadFileService uploadService;
+	private IS3Service S3Service;
 	
 	@Autowired
 	private IArchivosService archivoService;
@@ -165,7 +166,7 @@ public class UsuarioRestController {
 	
 	
 	@DeleteMapping("/usuarios/{id}")
-	public ResponseEntity<?> delete(@PathVariable Long id) {
+	public ResponseEntity<?> delete(@PathVariable Long id) throws IOException {
 		
 		Map<String, Object> response = new HashMap();
 		
@@ -174,7 +175,7 @@ public class UsuarioRestController {
 			List<Archivos> archivos = usuario.getFoto();
 			 for (Archivos archivo : archivos) {
 			        String nombreFotoAnterior = archivo.getNombre();
-			        uploadService.eliminar(nombreFotoAnterior);
+			        S3Service.deleteFile(nombreFotoAnterior);
 			        archivoService.delete(archivo.getId());
 			    }
 			usuarioService.delete(id);
@@ -216,33 +217,7 @@ public class UsuarioRestController {
 		return new ResponseEntity<Map<String,Object>>(response ,HttpStatus.CREATED);	
 	}
 	*/
-	@GetMapping("upload/img/{nombreFoto:.+}")
-	public ResponseEntity<Resource> verFoto(@PathVariable String nombreFoto){
 
-		Resource recurso=null;
-		
-		try {
-			recurso=uploadService.cargar(nombreFoto);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
-	
-		HttpHeaders cabecera=new HttpHeaders();
-		cabecera.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+recurso.getFilename()+"\"");
-		return new ResponseEntity<Resource>(recurso,cabecera,HttpStatus.OK);
-	}
-	
-	@Transactional
-    @PutMapping("/usuarios/{id}/estado")
-    public ResponseEntity<String> cambiarEstadoUsuario(@PathVariable long id) {
-        try {
-        	usuarioService.cambiarEstadoUsuario(id);
-            return ResponseEntity.ok("Estado del usuario cambiado correctamente.");
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("El usuario con ID " + id + " no existe.");
-        }
-    }
 	
 	@PostMapping("/usuarios/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> loginRequest) {
