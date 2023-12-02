@@ -3,7 +3,9 @@ package com.proyecto.integrador.hotel.libertador.models.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -42,12 +44,16 @@ public class DetalleReserva implements Serializable{
     @JoinColumn(name="id_salon")
     private Salon salones;*/
     
-
+    
+    @JsonBackReference("detalles-reservas")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Reserva reserva;
+    
     public Double getImporte() {
         Double importeHabitaciones = 0.0;
 
         if (habitaciones != null) {
-            importeHabitaciones =  habitaciones.getCostohabitacion();
+            importeHabitaciones =  habitaciones.getCostoTotalHabitacion();
         }
 
         /*if (salones != null) {
@@ -115,5 +121,13 @@ public class DetalleReserva implements Serializable{
 
 
 	private static final long serialVersionUID = 1L;
+
+	public Reserva getReserva() {
+		return reserva;
+	}
+
+	public void setReserva(Reserva reserva) {
+		this.reserva = reserva;
+	}
 
 }

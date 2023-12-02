@@ -1,8 +1,12 @@
 package com.proyecto.integrador.hotel.libertador.controllers;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +21,7 @@ import com.proyecto.integrador.hotel.libertador.models.service.IDetalleReservaSe
 
 @CrossOrigin(origins = {"http://localhost:5173"})
 @RestController
-@RequestMapping
+@RequestMapping("/api")
 public class DetalleRestController {
 	@Autowired
 	private IDetalleReservaService detalleService;
@@ -27,11 +31,17 @@ public class DetalleRestController {
 		return detalleService.findAll();
 	}
 	
-	@PostMapping({"detalles"})
-	public DetalleReserva create(@RequestBody DetalleReserva detalle) {
-		DetalleReserva nuevoDetalle=null;
-		return nuevoDetalle=detalleService.save(detalle);
-	}
+	@PostMapping("/detalles")
+    public ResponseEntity<?> create(@RequestBody DetalleReserva detalle) {
+        DetalleReserva nuevoDetalle = detalleService.save(detalle);
+
+        Map<String, Object> response = new HashMap();
+        response.put("mensaje", "Detalle de reserva creado con éxito");
+        response.put("idDetalle", nuevoDetalle.getId());
+        response.put("url", "/api/detalles/" + nuevoDetalle.getId());
+
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
 	
 	//nose si se implementara
 	@PutMapping({"detalles/{id}"})
