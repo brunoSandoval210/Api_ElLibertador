@@ -39,7 +39,7 @@ public class Habitacion implements Serializable {
 	@Column(name = "num_habitacion")
 	private int numHabitacion;
 
-	@NotNull(message = "El costo de la habitacion no puede estar vacio")
+
 	private Double costohabitacion;
 
 	private int maxPersonas;
@@ -58,7 +58,7 @@ public class Habitacion implements Serializable {
 
 	private String disponibilidad;
 
-	@JsonManagedReference
+	@JsonManagedReference("habitacion-archivos")
 	@OneToMany(mappedBy = "habitacion", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Archivos> foto;
 
@@ -144,7 +144,9 @@ public class Habitacion implements Serializable {
 	}
 
 	public Double getCostohabitacion() {
-		return costohabitacion;
+		Categoria tipo=getTipoHabitacion();
+		double precioHabitacion=tipo.getPrecioCategoria();
+		return precioHabitacion;
 	}
 
 	public void setCostohabitacion(Double costohabitacion) {
@@ -160,12 +162,11 @@ public class Habitacion implements Serializable {
 	}
 
 	public int getMaxPersonas() {
-		return maxPersonas;
+		Categoria tipo=getTipoHabitacion();
+		int max=tipo.getCantPersonas();
+		return max;
 	}
 
-	public void setMaxPersonas(int maxPersonas) {
-		this.maxPersonas = maxPersonas;
-	}
 
 	public Date getFechaAlta() {
 		return fechaAlta;
@@ -257,6 +258,8 @@ public class Habitacion implements Serializable {
 		double total = getCostoServicios() + getCostohabitacion();
 		return total;
 	}
+	
+	
 
 	private static final long serialVersionUID = 1L;
 }

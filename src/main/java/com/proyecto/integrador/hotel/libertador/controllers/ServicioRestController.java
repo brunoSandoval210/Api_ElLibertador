@@ -116,6 +116,7 @@ public class ServicioRestController {
 		return new ResponseEntity<Map<String,Object>>(response ,HttpStatus.CREATED);
 	}
 	
+	@Transactional
 	@PutMapping("/servicios/{id}")
 	public ResponseEntity<?> update(@Valid @RequestBody Servicio servicio, BindingResult result, @PathVariable Long id) {
 		Servicio servicioACtual=servicioService.findById(id);

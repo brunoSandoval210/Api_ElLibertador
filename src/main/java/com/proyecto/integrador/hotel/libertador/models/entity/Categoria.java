@@ -45,7 +45,7 @@ public class Categoria implements Serializable {
 	@Column(nullable = false)
 	private String estado;
 	
-	@JsonManagedReference
+	@JsonManagedReference("categoria-archivos")
 	@OneToMany(mappedBy = "categoria", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Archivos> foto;
 	private String descripcion_breve;

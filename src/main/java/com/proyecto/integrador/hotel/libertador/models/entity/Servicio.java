@@ -48,7 +48,7 @@ public class Servicio implements Serializable {
 	@ManyToMany(mappedBy = "servicios", fetch = FetchType.LAZY)
 	private List<Categoria> categorias;
 
-	@JsonManagedReference
+	@JsonManagedReference("servicio-archivos")
 	@OneToMany(mappedBy = "servicio", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Archivos> foto;
 
