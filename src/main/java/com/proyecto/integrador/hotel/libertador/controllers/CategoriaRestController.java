@@ -108,6 +108,7 @@ public class CategoriaRestController {
 		return new ResponseEntity<Map<String,Object>>(response ,HttpStatus.CREATED);
 	}
 	
+	@Transactional
 	@PutMapping("/categorias/{id}")
 	public ResponseEntity<?> update(@Valid @RequestBody Categoria categoria,BindingResult result, @PathVariable Long id) {
 		Categoria categoriaActual=categoriaService.findById(id);

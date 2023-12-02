@@ -81,6 +81,9 @@ INSERT INTO `habitacion` (`costohabitacion`, `fecha_alta`, `fecha_baja`, `max_pe
 INSERT INTO `habitacion` (`costohabitacion`, `fecha_alta`, `fecha_baja`, `max_personas`, `num_habitacion`, `id_categoria_habitacion`, `estado`) VALUES(100, '2023-10-17', NULL, 4, 601, 6,  'Activo');
 INSERT INTO `habitacion` (`costohabitacion`, `fecha_alta`, `fecha_baja`, `max_personas`, `num_habitacion`, `id_categoria_habitacion`, `estado`) VALUES(100, '2023-10-17', NULL, 4, 602, 6,  'Activo');
 
+
+
+
 INSERT INTO `reserva` (`fecha_reserva`, `id_usuario`) VALUES('2023-11-05', 1);
 INSERT INTO `reserva` (`fecha_reserva`, `id_usuario`) VALUES('2023-11-07', 2);
 INSERT INTO `reserva` (`fecha_reserva`, `id_usuario`) VALUES('2023-11-10', 3);
