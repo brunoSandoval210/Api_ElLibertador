@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -82,7 +83,7 @@ public class ReservaRestController {
 		response.put("mensaje", "La reserva se ha eliminado con exito");
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 	}*/
-	
+	@Transactional
 	@PostMapping("/reservas")
 	public ResponseEntity<?> create(@RequestBody Reserva reserva, BindingResult result) {
 		Reserva nuevaReserva=null;
