@@ -44,7 +44,6 @@ public class Reserva implements Serializable{
     @JoinColumn(name="reserva_id")
     private List<DetalleReserva> detalleReserva;
     
-    @NotNull(message = "La fecha de reserva no puede ser nullo")
     @Temporal(TemporalType.DATE)
     private Date fechaReserva;
 

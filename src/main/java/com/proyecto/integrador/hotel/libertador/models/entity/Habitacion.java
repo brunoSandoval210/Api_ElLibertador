@@ -206,6 +206,7 @@ public class Habitacion implements Serializable {
 
 	public String getDisponibilidad() {
 		List<Date> fechasReservadas = FechasReservadas();
+		System.out.println("Fechas Reservadas: " + fechasReservadas);
 
 		if (fechasReservadas.isEmpty()) {
 			// Si no hay fechas reservadas, la habitación está disponible
@@ -214,14 +215,19 @@ public class Habitacion implements Serializable {
 			Date fechaActual = new Date();
 
 			for (int i = 0; i < fechasReservadas.size(); i += 2) {
-				Date checkIn = fechasReservadas.get(i);
-				Date checkOut = fechasReservadas.get(i + 1);
+				if (i + 1 < fechasReservadas.size()) {
+		            Date checkIn = fechasReservadas.get(i);
+		            Date checkOut = fechasReservadas.get(i + 1);
+		            System.out.println("CheckIn: " + checkIn + ", CheckOut: " + checkOut);
 
-				if (!fechaActual.before(checkIn) && fechaActual.before(checkOut)) {
-					// La fecha actual está después del check-in y antes del check-out, la
-					// habitación está reservada
-					return "No Disponible";
-				}
+		            if (!fechaActual.before(checkIn) && fechaActual.before(checkOut)) {
+						// La fecha actual está después del check-in y antes del check-out, la
+						// habitación está reservada
+						return "No Disponible";
+					}
+		        }
+
+				
 			}
 
 			// Si no está dentro de ningún período de reserva, la habitación está disponible
