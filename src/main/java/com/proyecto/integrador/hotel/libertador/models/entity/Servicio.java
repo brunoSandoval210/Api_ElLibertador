@@ -44,7 +44,7 @@ public class Servicio implements Serializable {
 	@Column(nullable = false)
 	private String estado;
 
-	@JsonIgnoreProperties({ "servicios", "hibernateLazyInitializer", "handler" })
+	@JsonIgnoreProperties(value={ "servicios", "hibernateLazyInitializer", "handler" },allowSetters = true)
 	@ManyToMany(mappedBy = "servicios", fetch = FetchType.LAZY)
 	private List<Categoria> categorias;
 
@@ -124,6 +124,7 @@ public class Servicio implements Serializable {
 	public List<Archivos> getFoto() {
 		return foto;
 	}
+	
 
 	public void setFoto(List<Archivos> foto) {
 		this.foto = foto;

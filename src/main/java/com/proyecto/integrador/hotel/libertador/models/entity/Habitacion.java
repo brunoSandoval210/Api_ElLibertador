@@ -62,7 +62,7 @@ public class Habitacion implements Serializable {
 	@OneToMany(mappedBy = "habitacion", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Archivos> foto;
 
-	@JsonIgnoreProperties({ "habitaciones", "hibernateLazyInitializer", "handler" })
+	@JsonIgnoreProperties(value={ "habitaciones", "hibernateLazyInitializer", "handler" },allowSetters = true)
 	@ManyToOne
 	@JoinColumn(name = "Id_categoria_habitacion")
 	@NotNull(message = "El tipo de habitación no puede ser nulo")

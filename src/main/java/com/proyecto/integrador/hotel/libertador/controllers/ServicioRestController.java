@@ -154,31 +154,6 @@ public class ServicioRestController {
 		return new ResponseEntity<Map<String,Object>>(response ,HttpStatus.CREATED);	
 	}
 	
-	@DeleteMapping("/servicios/{id}")
-	public ResponseEntity<?> delete(@PathVariable Long id) throws IOException {
-		
-		Map<String, Object> response = new HashMap();
-		
-		try {
-			Servicio servicio=servicioService.findById(id);
-			List<Archivos> archivos=servicio.getFoto();
-			for(Archivos archivo: archivos) {
-				String nombreFotoAnterior=archivo.getNombre();
-				S3Service.deleteFile(nombreFotoAnterior);
-				archivoService.delete(archivo.getId());
-				
-			}
-			servicioService.delete(id);
-		} catch (DataAccessException e) {
-			response.put("mensaje", "Error al elimnar el servicio en la base de datos");
-			response.put("error", e.getMessage().concat(":").concat(e.getMostSpecificCause().getMessage()));
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		
-		response.put("mensaje", "El servicio eliminado con exito");
-		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
-	}
-	
 	
 	@Transactional
     @PutMapping("/servicios/{id}/estado")

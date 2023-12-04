@@ -34,7 +34,7 @@ public class DetalleReserva implements Serializable{
     private Date chackOut;
     
     
-    @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
+    @JsonIgnoreProperties(value={"hibernateLazyInitializer","handler"},allowSetters = true)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_habitacion")
     private Habitacion habitaciones;

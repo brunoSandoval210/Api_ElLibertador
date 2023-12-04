@@ -13,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Archivos implements Serializable{
@@ -24,9 +25,10 @@ public class Archivos implements Serializable{
 	private String nombre;
 	
 	@JsonBackReference("usuario-archivos")
-	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usuario_id")
-    private Usuario usuario;
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "usuario_id")
+	private Usuario usuario;
+
 
 	@JsonBackReference("servicio-archivos")
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -109,7 +111,9 @@ public class Archivos implements Serializable{
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	
+	public Archivos(String nombre) {
+        this.nombre = nombre;
+    }
     
     
 }

@@ -65,24 +65,7 @@ public class ReservaRestController {
 		return new ResponseEntity<Reserva>(reserva, HttpStatus.OK);
 	}
 	
-	/*@DeleteMapping("/reservas/{id}")
-	public ResponseEntity<?> delete(@PathVariable Long id) {
-		
-		Map<String, Object> response = new HashMap();
-		
-		try {
-			Reserva reserva=reservaService.findById(id);
-			
-			reservaService.delete(id);
-		} catch (DataAccessException e) {
-			response.put("mensaje", "Error al elimnar la reserva en la base de datos");
-			response.put("error", e.getMessage().concat(":").concat(e.getMostSpecificCause().getMessage()));
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		
-		response.put("mensaje", "La reserva se ha eliminado con exito");
-		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
-	}*/
+	
 	@Transactional
 	@PostMapping("/reservas")
 	public ResponseEntity<?> create(@RequestBody Reserva reserva, BindingResult result) {
