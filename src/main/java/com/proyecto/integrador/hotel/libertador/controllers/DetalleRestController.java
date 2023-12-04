@@ -45,14 +45,5 @@ public class DetalleRestController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 	
-	//nose si se implementara
-	@PutMapping({"detalles/{id}"})
-	public DetalleReserva update(@RequestBody DetalleReserva detalle, @PathVariable Long id) {
-		DetalleReserva detalleActual=detalleService.findById(id);
-		DetalleReserva detalleActualizado=null;
-		//Falta agregar lo que se actualizara
-		
-		return detalleActualizado=detalleService.save(detalleActualizado);
-	}
 
 }

@@ -18,6 +18,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.Email;
@@ -68,13 +69,14 @@ public class Usuario implements Serializable {
 
 	private String estado;
 	
-	@JsonIgnoreProperties(value = { "usuario", "hibernateLazyInitializer", "handler" }, allowGetters = true)
+	@JsonIgnoreProperties(value = { "usuario", "hibernateLazyInitializer", "handler" }, allowSetters = true,allowGetters = true)
 	@OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Reserva> reservas;
 
 	@JsonManagedReference("usuario-archivos")
-	@OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private List<Archivos> foto;
+	@OneToOne(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Archivos foto;
+
 
 	public Usuario() {
 		this.reservas = new ArrayList<>();
@@ -193,13 +195,17 @@ public class Usuario implements Serializable {
 		this.reservas = reservas;
 	}
 
-	public List<Archivos> getFoto() {
-		return foto;
+	public Archivos getFoto() {
+	    return foto;
 	}
 
-	public void setFoto(List<Archivos> foto) {
-		this.foto = foto;
+	public void setFoto(Archivos foto) {
+	    this.foto = foto;
+	    if (foto != null) {
+	        foto.setUsuario(this);
+	    }
 	}
+
 
 	@Override
 	public String toString() {

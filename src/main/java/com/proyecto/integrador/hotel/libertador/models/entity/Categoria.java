@@ -54,7 +54,7 @@ public class Categoria implements Serializable {
 	private String descripcion_larga;
 	private double precioCategoria;
 
-	@JsonIgnoreProperties({ "categorias", "hibernateLazyInitializer", "handler" })
+	@JsonIgnoreProperties(value={ "categorias", "hibernateLazyInitializer", "handler" },allowSetters = true)
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "servicio_categoria", joinColumns = @JoinColumn(name = "id_categoria"), inverseJoinColumns = @JoinColumn(name = "id_servicio"))
 	private List<Servicio> servicios;
@@ -65,7 +65,7 @@ public class Categoria implements Serializable {
 	 * List<Salon> salones;
 	 */
 
-	@JsonIgnoreProperties({ "tipoHabitacion", "hibernateLazyInitializer", "handler" })
+	@JsonIgnoreProperties(value={ "tipoHabitacion", "hibernateLazyInitializer", "handler" },allowSetters = true)
 	@OneToMany(mappedBy = "tipoHabitacion", fetch = FetchType.LAZY)
 	private List<Habitacion> habitaciones;
 

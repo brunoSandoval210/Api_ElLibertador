@@ -116,29 +116,6 @@ public class HabitacionRestController {
 		return new ResponseEntity<Map<String,Object>>(response ,HttpStatus.CREATED);
 	}
 	
-	@DeleteMapping("/habitaciones/{id}")
-	public ResponseEntity<?> delete(@PathVariable Long id) throws IOException {
-		
-		Map<String, Object> response = new HashMap();
-		
-		try {
-			Habitacion habitacion=habitacionService.findById(id);
-			List<Archivos> archivos = habitacion.getFoto();
-			 for (Archivos archivo : archivos) {
-			        String nombreFotoAnterior = archivo.getNombre();
-			        S3Service.deleteFile(nombreFotoAnterior);
-			        archivoService.delete(archivo.getId());
-			    }
-			habitacionService.delete(id);
-		} catch (DataAccessException e) {
-			response.put("mensaje", "Error al elimnar la habitacion en la base de datos");
-			response.put("error", e.getMessage().concat(":").concat(e.getMostSpecificCause().getMessage()));
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		
-		response.put("mensaje", "La habitacion eliminado con exito");
-		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
-	}
 	
 	@Transactional
     @PutMapping("/habitaciones/{id}/estado")
