@@ -108,7 +108,7 @@ public class Habitacion implements Serializable {
 	    return fechasReservadas;
 	}
 	private String formatearFecha(Date fecha) {
-		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-YY");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		return sdf.format(fecha);
 	}
 	
