@@ -25,7 +25,7 @@ public class Archivos implements Serializable{
 	private String nombre;
 	
 	@JsonBackReference("usuario-archivos")
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_id")
 	private Usuario usuario;
 

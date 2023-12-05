@@ -119,6 +119,7 @@ public class UsuarioRestController {
 		}
 		response.put("mensaje", "El usuario se creo con exito");
 		response.put("usuario", nuevoUsuario);
+		response.put("IdUsuario", nuevoUsuario.getId());
 		return new ResponseEntity<Map<String,Object>>(response ,HttpStatus.CREATED);
 	}
 	

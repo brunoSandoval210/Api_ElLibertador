@@ -74,8 +74,8 @@ public class Usuario implements Serializable {
 	private List<Reserva> reservas;
 
 	@JsonManagedReference("usuario-archivos")
-	@OneToOne(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Archivos foto;
+	@OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<Archivos> foto;
 
 
 	public Usuario() {
@@ -195,17 +195,15 @@ public class Usuario implements Serializable {
 		this.reservas = reservas;
 	}
 
-	public Archivos getFoto() {
-	    return foto;
+
+
+	public List<Archivos> getFoto() {
+		return foto;
 	}
 
-	public void setFoto(Archivos foto) {
-	    this.foto = foto;
-	    if (foto != null) {
-	        foto.setUsuario(this);
-	    }
+	public void setFoto(List<Archivos> foto) {
+		this.foto = foto;
 	}
-
 
 	@Override
 	public String toString() {
