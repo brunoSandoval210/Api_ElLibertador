@@ -112,6 +112,7 @@ public class ServicioRestController {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		response.put("mensaje", "El servicio se creo con exito");
+		response.put("servicioId", nuevoServicio.getId());
 		response.put("servicio", nuevoServicio);
 		return new ResponseEntity<Map<String,Object>>(response ,HttpStatus.CREATED);
 	}

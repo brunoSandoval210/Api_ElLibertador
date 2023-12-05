@@ -32,7 +32,6 @@ public class Servicio implements Serializable {
 
 	private Double costo;
 
-	@NotNull(message = "La fecha de alta no puede ser nullo")
 	@Temporal(TemporalType.DATE)
 	private Date fechaAlta;
 	/*
