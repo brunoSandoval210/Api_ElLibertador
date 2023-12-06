@@ -1,4 +1,4 @@
-package com.proyecto.integrador.hotel.libertador.models.entity;
+package com.proyecto.integrador.hotel.libertador.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
