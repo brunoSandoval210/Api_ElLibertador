@@ -63,7 +63,7 @@ public class HabitacionRestController {
 	
 	@GetMapping("/habitaciones/page/{page}")
 	public Page<Habitacion> index(@PathVariable Integer page) {
-	    Pageable pageable = PageRequest.of(page, 10);
+	    Pageable pageable = PageRequest.of(page, 5);
 	    return habitacionService.findAll(pageable);
 	}
 	
@@ -114,6 +114,44 @@ public class HabitacionRestController {
 		response.put("mensaje", "La habitacion se creo con exito");
 		response.put("usuario", nuevaHabitacion);
 		return new ResponseEntity<Map<String,Object>>(response ,HttpStatus.CREATED);
+	}
+	
+	@Transactional
+	@PutMapping("/habitaciones/{id}")
+	public ResponseEntity<?> update(@Valid @RequestBody Habitacion habitacion, BindingResult result, @PathVariable Long id){
+		Habitacion habitacionActual=habitacionService.findById(id);
+		Habitacion habitacionActualizada=null;
+		Map<String, Object> response = new HashMap();
+		if(result.hasErrors()) {
+			List<String> errors=result.getFieldErrors()
+					.stream()
+					.map(err->"El campo '"+err.getField()+"' "+err.getDefaultMessage())
+					.collect(Collectors.toList());
+			
+			response.put("errors", errors);
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
+		}
+		
+		if (habitacionActual == null) {
+			response.put("mensaje", "Error, no se puede editar, la habitaion ID: ".concat(id.toString().concat(" no existe en la base de datos")));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
+		try {
+			habitacionActual.setNumHabitacion(habitacion.getNumHabitacion());
+			habitacionActual.setTipoHabitacion(habitacion.getTipoHabitacion());
+
+			
+			habitacionActualizada= habitacionService.save(habitacionActual);
+			
+		} catch (DataAccessException e) {
+			response.put("mensaje", "Error al actualizar la habitacion en la base de datos");
+			response.put("error", e.getMessage().concat(":").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		response.put("mensaje", "La habitacion se actualizo con exito");
+		response.put("habitacion", habitacionActual);
+		return new ResponseEntity<Map<String,Object>>(response ,HttpStatus.CREATED);	
 	}
 	
 	

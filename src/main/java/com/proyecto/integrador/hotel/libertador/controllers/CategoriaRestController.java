@@ -55,7 +55,7 @@ public class CategoriaRestController {
 
 	@GetMapping("/categorias/page/{page}")
 	public Page<Categoria> index(@PathVariable Integer page) {
-	    Pageable pageable = PageRequest.of(page, 10);
+	    Pageable pageable = PageRequest.of(page, 4);
 	    return categoriaService.findAll(pageable);
 	}
 	
