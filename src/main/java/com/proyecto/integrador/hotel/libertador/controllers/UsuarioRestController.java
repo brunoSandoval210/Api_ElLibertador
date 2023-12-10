@@ -165,36 +165,18 @@ public class UsuarioRestController {
 	}
 	
 	
+	@Transactional
+    @PutMapping("/usuarios/{id}/estado")
+    public ResponseEntity<String> cambiarEstadoUsuario(@PathVariable long id) {
+        try {
+        	usuarioService.cambiarEstadoUsuario(id);
+            return ResponseEntity.ok("Estado del usuario se ha cambiado correctamente.");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("el usuario con ID " + id + " no existe.");
+        }
+    }
 
-	
-	/*@PostMapping("usuarios/upload")
-	public ResponseEntity<?> upload(@RequestParam("archivo") MultipartFile archivo, @RequestParam("id") Long id){
-		Map<String, Object> response = new HashMap();
-		
-		Usuario usuario=usuarioService.findById(id);
-		
-		if(!archivo.isEmpty()) {
-			String nombreArchivo=null;
-			try {
-				nombreArchivo=uploadService.copiar(archivo);
-			} catch (IOException e) {
-				response.put("mensaje", "Error al subir la imagen");
-				response.put("error", e.getMessage().concat(":").concat(e.getCause().getMessage()));
-				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-			
-			String nombreFotoAnterior=usuario.getFoto();
-			
-			uploadService.eliminar(nombreFotoAnterior);
-			
-			usuario.setFoto(nombreArchivo);
-			usuarioService.save(usuario);
-			response.put("usuario", usuario);
-			response.put("mensaje", "Se ha subido correctamente la imagen"+nombreArchivo);
-		}
-		return new ResponseEntity<Map<String,Object>>(response ,HttpStatus.CREATED);	
-	}
-	*/
 
 	
 	@PostMapping("/usuarios/login")
