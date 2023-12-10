@@ -46,5 +46,11 @@ public class ReservaServiceImpl implements IReservaService{
 	public void delete(Long id) {
 		reservaDao.deleteById(id);
 	}
+	
+	@Override
+    @Transactional(readOnly = true)
+    public List<Reserva> findByUsuarioDni(int dni) {
+        return reservaDao.findByUsuario_DNI(dni);
+    }
 
 }
