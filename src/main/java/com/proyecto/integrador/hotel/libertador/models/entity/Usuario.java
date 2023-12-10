@@ -60,10 +60,6 @@ public class Usuario implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date fechaAlta;
 
-	/*
-	 * @PrePersist public void prePersist() { fechaAlta=new Date(); }
-	 */
-
 	@Temporal(TemporalType.DATE)
 	private Date fechaBaja;
 
