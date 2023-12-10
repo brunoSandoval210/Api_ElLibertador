@@ -17,4 +17,6 @@ public interface IReservaService {
 	public Reserva save(Reserva reserva);
 	
 	public void delete(Long id);
+	
+	List<Reserva> findByUsuarioDni(int dni);
 }

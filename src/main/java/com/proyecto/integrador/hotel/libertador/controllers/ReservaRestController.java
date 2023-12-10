@@ -94,4 +94,26 @@ public class ReservaRestController {
 	    response.put("url", "/api/reservas/" + nuevaReserva.getId());  // Devuelve la URL
 	    return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 	}
+	
+	@GetMapping("/reservas/dni/{dni}")
+    public ResponseEntity<?> findByUsuarioDni(@PathVariable int dni) {
+        List<Reserva> reservas = null;
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            reservas = reservaService.findByUsuarioDni(dni);
+
+        } catch (DataAccessException e) {
+            response.put("mensaje", "Error al realizar la consulta en la base de datos");
+            response.put("error", e.getMessage().concat(":").concat(e.getMostSpecificCause().getMessage()));
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        if (reservas.isEmpty()) {
+            response.put("mensaje", "No hay reservas para el usuario con DNI: " + dni);
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<List<Reserva>>(reservas, HttpStatus.OK);
+    }
 }
