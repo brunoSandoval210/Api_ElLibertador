@@ -46,6 +46,8 @@ public class Reserva implements Serializable{
     
     @Temporal(TemporalType.DATE)
     private Date fechaReserva;
+    
+    private String codigoReserva;
 
 	
 	public Double getTotal() {
@@ -102,6 +104,14 @@ public class Reserva implements Serializable{
 
 	
 	
+	public String getCodigoReserva() {
+		return codigoReserva;
+	}
+
+	public void setCodigoReserva(String codigoReserva) {
+		this.codigoReserva = codigoReserva;
+	}
+
 	@Override
 	public String toString() {
 		return "Reserva [id=" + id + ", usuario=" + usuario + ", detalleReserva=" + detalleReserva + ", fechaReserva="
